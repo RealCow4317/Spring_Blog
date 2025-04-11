@@ -36,4 +36,9 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(int id) {
         boardDAO.deleteBoard(id);
     }
+
+    @Override
+    public List<BoardDTO> getRecentBoards() {
+        return boardDAO.getRecentBoards();
+    }
 }

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,23 +8,12 @@
     <title>게시판 목록</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <style>
-        body {
-            padding-top: 60px;
-            background-color: #f8f9fa;
-        }
-
-        .offcanvas {
-            background-color: #343a40;
-            color: white;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
         }
     </style>
 </head>
@@ -72,15 +62,11 @@
         </thead>
         <tbody>
         <c:forEach var="board" items="${boards}">
-            <tr>
+            <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'">
                 <td>${board.id}</td>
-                <td>
-                    <a href="${pageContext.request.contextPath}/board/view/${board.id}" class="text-primary">
-                            ${board.title}
-                    </a>
-                </td>
+                <td class="text-primary">${board.title}</td>
                 <td>${board.writer}</td>
-                <td>${board.createdAt}</td>
+                <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
             </tr>
         </c:forEach>
         </tbody>
@@ -89,5 +75,6 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>
 </html>

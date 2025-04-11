@@ -7,14 +7,14 @@
 
     <!-- 게시글 전체 조회 -->
     <select id="getAllBoards" resultType="com.example.blog.dto.BoardDTO">
-        SELECT id, title, content, writer, created_at
+        SELECT id, title, content, writer, created_at AS createdAt
         FROM board
         ORDER BY id DESC
     </select>
 
     <!-- 게시글 상세 조회 -->
     <select id="getBoardById" parameterType="int" resultType="com.example.blog.dto.BoardDTO">
-        SELECT id, title, content, writer, created_at
+        SELECT id, title, content, writer, created_at AS createdAt
         FROM board
         WHERE id = #{id}
     </select>
@@ -36,6 +36,13 @@
     <delete id="deleteBoard" parameterType="int">
         DELETE FROM board WHERE id = #{id}
     </delete>
+
+    <select id="getRecentBoards" resultType="com.example.blog.dto.BoardDTO">
+        SELECT id, title, content, writer, created_at AS createdAt
+        FROM board
+        ORDER BY created_at DESC
+            LIMIT 4
+    </select>
 
 
 </mapper>

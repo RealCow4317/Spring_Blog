@@ -9,4 +9,5 @@ public interface BoardDAO {
     void insertBoard(BoardDTO board);
     void updateBoard(BoardDTO board);
     void deleteBoard(int id);
+    List<BoardDTO> getRecentBoards();
 }

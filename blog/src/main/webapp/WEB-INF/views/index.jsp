@@ -1,4 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,28 +9,15 @@
     <title>Index Page</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 60px;
-            background-color: #f8f9fa;
-        }
+    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
 
-        .offcanvas {
-            background-color: #343a40;
-            color: white;
-        }
 
-        .board-preview .card {
-            margin-bottom: 20px;
-        }
-
-        .view-more-btn {
-            text-align: right;
-        }
-    </style>
 </head>
-<body>
+<script>
 
+</script>
+
+<body>
 <!-- 상단 네비게이션 -->
 <nav class="navbar fixed-top navbar-dark bg-dark">
     <div class="container-fluid">
@@ -46,9 +36,9 @@
     </div>
     <div class="offcanvas-body">
         <ul class="nav flex-column">
-            <li class="nav-item"><a class="nav-link text-white" href="/">홈</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="/board/list">게시판</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="/member/profile">내 정보</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/">홈</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/board/list">게시판</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/member/profile">내 정보</a></li>
         </ul>
     </div>
 </div>
@@ -57,40 +47,39 @@
 <div class="container mt-4">
     <h2 class="mb-4">최근 게시글</h2>
     <div class="row board-preview">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">게시글 제목 1</h5>
-                    <p class="card-text">게시글 내용 요약 또는 미리보기 텍스트...</p>
-                    <a href="/board/detail?id=1" class="btn btn-sm btn-primary">읽기</a>
+        <c:forEach var="board" items="${recentBoards}">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">${board.title}</h5>
+                        <p class="card-text">
+                            <c:choose>
+                                <c:when test="${fn:length(board.content) > 50}">
+                                    ${fn:substring(board.content, 0, 50)}...
+                                </c:when>
+                                <c:otherwise>
+                                    ${board.content}
+                                </c:otherwise>
+                            </c:choose>
+                        </p>
+                        <p class="text-muted mb-2">
+                            <small>작성일: <span class="created-at" data-time="${board.createdAt}"></span></small>
+                        </p>
+                        <a href="${pageContext.request.contextPath}/board/view/${board.id}" class="btn btn-sm btn-primary">읽기</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">게시글 제목 2</h5>
-                    <p class="card-text">게시글 내용 요약 또는 미리보기 텍스트...</p>
-                    <a href="/board/detail?id=2" class="btn btn-sm btn-primary">읽기</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">게시글 제목 3</h5>
-                    <p class="card-text">게시글 내용 요약 또는 미리보기 텍스트...</p>
-                    <a href="/board/detail?id=3" class="btn btn-sm btn-primary">읽기</a>
-                </div>
-            </div>
-        </div>
+        </c:forEach>
     </div>
+
     <div class="view-more-btn mt-3">
-        <a href="/board/list" class="btn btn-outline-secondary">자세히 보기</a>
+        <a href="${pageContext.request.contextPath}/board/list" class="btn btn-outline-secondary">자세히 보기</a>
     </div>
 </div>
 
+
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>
 </html>

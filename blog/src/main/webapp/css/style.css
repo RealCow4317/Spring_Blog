@@ -1,0 +1,27 @@
+body {
+    padding-top: 60px;
+    background-color: #f8f9fa;
+}
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.offcanvas {
+    background-color: #343a40;
+    color: white;
+}
+
+.board-preview .card {
+    margin-bottom: 20px;
+}
+
+.view-more-btn {
+    text-align: right;
+}
+.card {
+    padding: 20px;
+}
