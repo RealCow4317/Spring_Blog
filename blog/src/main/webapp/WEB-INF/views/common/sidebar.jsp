@@ -1,3 +1,6 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+
 <div class="offcanvas offcanvas-start" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="sideMenuLabel">메뉴</h5>
@@ -9,7 +12,7 @@
             <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/board/list">게시판</a></li>
 
             <c:choose>
-                <c:when test="${not empty loginUser}">
+                <c:when test="${not empty loginUser and loginUser.name ne null}">
                     <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/member/profile">내 정보</a></li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="${pageContext.request.contextPath}/member/logout">

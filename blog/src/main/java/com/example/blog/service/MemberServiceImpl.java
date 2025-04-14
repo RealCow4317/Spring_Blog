@@ -5,6 +5,8 @@ import com.example.blog.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MemberServiceImpl implements MemberService {
 
@@ -25,4 +27,25 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO getMember(String id) {
         return memberDAO.getMemberById(id);
     }
+
+    @Override
+    public List<MemberDTO> getAllMembers() {
+        return memberDAO.getAllMembers();
+    }
+
+    @Override
+    public void deleteMember(int memberNo) {
+        memberDAO.deleteMember(memberNo);
+    }
+
+    @Override
+    public void updateMember(MemberDTO member) {
+        memberDAO.updateMember(member);
+    }
+    @Override
+    public List<MemberDTO> searchMembers(String keyword) {
+        return memberDAO.searchMembers(keyword);
+    }
+
+
 }

@@ -8,6 +8,8 @@ public class BoardDTO {
     private String content;
     private String writer;
     private Timestamp createdAt;
+    private int categoryId;
+    private String categoryName;
 
     // Getters/Setters
     public int getId() { return id; }
@@ -24,4 +26,10 @@ public class BoardDTO {
 
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+
+    public int getCategoryId() { return categoryId; }
+    public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
+
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
 }

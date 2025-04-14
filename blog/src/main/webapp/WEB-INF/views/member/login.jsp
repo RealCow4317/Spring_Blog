@@ -1,4 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,51 +11,20 @@
 </head>
 <body class="bg-light">
 
-<!-- 상단 네비게이션 -->
-<nav class="navbar fixed-top navbar-dark bg-dark">
-    <div class="container-fluid">
-        <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" aria-controls="sideMenu">
-            ☰ 메뉴
-        </button>
-        <span class="navbar-text text-white">빼지누의 블로그</span>
-    </div>
-</nav>
 
-<!-- 오프캔버스 사이드 메뉴 -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="sideMenuLabel">메뉴</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="nav flex-column">
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/">홈</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/board/list">게시판</a></li>
+<%@ include file="/WEB-INF/views/common/nav.jsp" %>
+<%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 
-            <c:choose>
-                <c:when test="${not empty loginUser}">
-                    <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/member/profile">내 정보</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="${pageContext.request.contextPath}/member/logout">
-                            로그아웃 (${loginUser.name}님)
-                        </a>
-                    </li>
-                </c:when>
-                <c:otherwise>
-                    <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/member/login">로그인</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/member/join">회원가입</a></li>
-                </c:otherwise>
-            </c:choose>
-        </ul>
-    </div>
-</div>
+
+<c:if test="${not empty joinSuccess}">
+    <script>alert("${joinSuccess}");</script>
+    <c:remove var="joinSuccess" scope="session" />
+</c:if>
+
 
 <div class="container mt-5">
     <h2 class="mb-4">로그인</h2>
 
-    <c:if test="${not empty error}">
-        <div class="alert alert-danger">${error}</div>
-    </c:if>
 
     <form action="${pageContext.request.contextPath}/member/login" method="post" class="card p-4 shadow-sm">
         <div class="mb-3">

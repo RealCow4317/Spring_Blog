@@ -1,11 +1,12 @@
 package com.example.blog.dto;
 
 public class MemberDTO {
-    private int memberNo;        // 기본키
-    private String id;           // 로그인 ID (username → id로 변경)
+    private int memberNo;
+    private String id;
     private String password;
     private String name;
     private String email;
+    private boolean admin;
 
     // Getters/Setters
     public int getMemberNo() { return memberNo; }
@@ -22,4 +23,7 @@ public class MemberDTO {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    public boolean isAdmin() { return admin; }
+    public void setAdmin(boolean admin) { this.admin = admin; }
 }

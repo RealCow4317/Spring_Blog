@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,30 +11,8 @@
 </head>
 <body>
 
-<!-- 상단 네비게이션 -->
-<nav class="navbar fixed-top navbar-dark bg-dark">
-    <div class="container-fluid">
-        <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" aria-controls="sideMenu">
-            ☰ 메뉴
-        </button>
-        <span class="navbar-text text-white">빼지누의 블로그</span>
-    </div>
-</nav>
-
-<!-- 오프캔버스 사이드 메뉴 -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="sideMenuLabel">메뉴</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="nav flex-column">
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/">홈</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/board/list">게시판</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/member/profile">내 정보</a></li>
-        </ul>
-    </div>
-</div>
+<%@ include file="/WEB-INF/views/common/nav.jsp" %>
+<%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 
 <!-- 본문 -->
 <div class="container mt-5">
@@ -49,6 +28,18 @@
             <div class="mb-3">
                 <label for="writer" class="form-label">작성자</label>
                 <input type="text" class="form-control" id="writer" name="writer" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="categoryId" class="form-label">카테고리</label>
+                <select class="form-select" id="categoryId" name="categoryId" required>
+                    <option value="">카테고리 선택</option>
+                    <c:forEach var="cat" items="${categoryList}">
+                        <option value="${cat.id}" ${cat.id == board.categoryId ? "selected" : ""}>
+                                ${cat.name}
+                        </option>
+                    </c:forEach>
+                </select>
             </div>
 
             <div class="mb-3">

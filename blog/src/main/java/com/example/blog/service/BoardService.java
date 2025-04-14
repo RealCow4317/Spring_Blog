@@ -14,4 +14,10 @@ public interface BoardService {
     int countBoards();
     List<BoardDTO> getBoardsByPage(int page, int pageSize);
 
+    // 검색
+    int countSearchBoards(String keyword);
+    List<BoardDTO> searchBoards(String keyword, int page, int pageSize);
+
+    int countBoardsByCategory(int categoryId);
+    List<BoardDTO> getBoardsByCategory(int categoryId, int page, int pageSize);
 }

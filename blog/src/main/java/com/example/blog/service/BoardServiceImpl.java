@@ -42,7 +42,6 @@ public class BoardServiceImpl implements BoardService {
         return boardDAO.getRecentBoards();
     }
 
-
     @Override
     public int countBoards() {
         return boardDAO.countBoards();
@@ -54,4 +53,25 @@ public class BoardServiceImpl implements BoardService {
         return boardDAO.getBoardsByPage(pageSize, offset);
     }
 
+    @Override
+    public int countSearchBoards(String keyword) {
+        return boardDAO.countSearchBoards(keyword);
+    }
+
+    @Override
+    public List<BoardDTO> searchBoards(String keyword, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return boardDAO.searchBoards(keyword, pageSize, offset);
+    }
+
+    @Override
+    public int countBoardsByCategory(int categoryId) {
+        return boardDAO.countBoardsByCategory(categoryId);
+    }
+
+    @Override
+    public List<BoardDTO> getBoardsByCategory(int categoryId, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return boardDAO.getBoardsByCategory(categoryId, pageSize, offset);
+    }
 }

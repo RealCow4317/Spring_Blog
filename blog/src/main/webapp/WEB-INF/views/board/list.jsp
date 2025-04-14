@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -6,7 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <title>게시판 목록</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <style>
@@ -20,29 +19,8 @@
 <body>
 
 <!-- 상단 네비게이션 -->
-<nav class="navbar fixed-top navbar-dark bg-dark">
-    <div class="container-fluid">
-        <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" aria-controls="sideMenu">
-            ☰ 메뉴
-        </button>
-        <span class="navbar-text text-white">게시판</span>
-    </div>
-</nav>
-
-<!-- 오프캔버스 사이드 메뉴 -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="sideMenuLabel">메뉴</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="nav flex-column">
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/">홈</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/board/list">게시판</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="${pageContext.request.contextPath}/member/profile">내 정보</a></li>
-        </ul>
-    </div>
-</div>
+<%@ include file="/WEB-INF/views/common/nav.jsp" %>
+<%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 
 <!-- 본문 -->
 <div class="container mt-5">
@@ -51,10 +29,32 @@
         <a href="${pageContext.request.contextPath}/board/write" class="btn btn-primary">✏️ 글쓰기</a>
     </div>
 
+    <form method="get" action="${pageContext.request.contextPath}/board/list" class="mb-4">
+        <div class="row g-2">
+            <div class="col-md-4">
+                <select name="categoryId" class="form-select">
+                    <option value="">전체 카테고리</option>
+                    <c:forEach var="cat" items="${categoryList}">
+                        <option value="${cat.id}" ${categoryId == cat.id ? "selected" : ""}>${cat.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <input type="text" name="keyword" class="form-control"
+                       placeholder="검색어를 입력하세요"
+                       value="${keyword != null ? keyword : ''}">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-outline-secondary w-100" type="submit">검색</button>
+            </div>
+        </div>
+    </form>
+
     <table class="table table-hover table-bordered bg-white">
         <thead class="table-dark">
         <tr>
             <th scope="col">번호</th>
+            <th scope="col">카테고리</th>
             <th scope="col">제목</th>
             <th scope="col">작성자</th>
             <th scope="col">작성일</th>
@@ -64,6 +64,7 @@
         <c:forEach var="board" items="${boards}">
             <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'">
                 <td>${board.id}</td>
+                <td>${board.categoryName}</td>
                 <td class="text-primary">${board.title}</td>
                 <td>${board.writer}</td>
                 <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
@@ -72,35 +73,33 @@
         </tbody>
     </table>
 
-
-    <!-- 게시글 테이블 아래에 추가 -->
     <nav>
         <ul class="pagination justify-content-center mt-4">
             <c:if test="${currentPage > 1}">
                 <li class="page-item">
-                    <a class="page-link" href="${pageContext.request.contextPath}/board/list?page=${currentPage - 1}">«</a>
+                    <a class="page-link"
+                       href="${pageContext.request.contextPath}/board/list?page=${currentPage - 1}&keyword=${keyword}&categoryId=${categoryId}">«</a>
                 </li>
             </c:if>
 
             <c:forEach begin="1" end="${totalPages}" var="i">
                 <li class="page-item ${i == currentPage ? 'active' : ''}">
-                    <a class="page-link" href="${pageContext.request.contextPath}/board/list?page=${i}">${i}</a>
+                    <a class="page-link"
+                       href="${pageContext.request.contextPath}/board/list?page=${i}&keyword=${keyword}&categoryId=${categoryId}">${i}</a>
                 </li>
             </c:forEach>
 
             <c:if test="${currentPage < totalPages}">
                 <li class="page-item">
-                    <a class="page-link" href="${pageContext.request.contextPath}/board/list?page=${currentPage + 1}">»</a>
+                    <a class="page-link"
+                       href="${pageContext.request.contextPath}/board/list?page=${currentPage + 1}&keyword=${keyword}&categoryId=${categoryId}">»</a>
                 </li>
             </c:if>
         </ul>
     </nav>
 
-
-
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>

@@ -5,18 +5,57 @@
 
 <mapper namespace="com.example.blog.dao.MemberDAO">
 
+    <!-- 회원가입 -->
     <insert id="insertMember" parameterType="com.example.blog.dto.MemberDTO">
         INSERT INTO member (id, password, name, email)
         VALUES (#{id}, #{password}, #{name}, #{email})
     </insert>
 
+    <!-- 로그인 -->
     <select id="loginMember" parameterType="com.example.blog.dto.MemberDTO" resultType="com.example.blog.dto.MemberDTO">
-        SELECT * FROM member
+        SELECT id, password, name, email, is_admin AS admin
+        FROM member
         WHERE id = #{id} AND password = #{password}
     </select>
 
+    <!-- ID로 회원 조회 -->
     <select id="getMemberById" parameterType="string" resultType="com.example.blog.dto.MemberDTO">
-        SELECT * FROM member WHERE id = #{id}
+        SELECT id, password, name, email, is_admin AS admin
+        FROM member
+        WHERE id = #{id}
     </select>
+
+    <!-- ID + 비밀번호로 회원 조회 (중복?) -->
+    <select id="getMemberByIdAndPassword" resultType="com.example.blog.dto.MemberDTO">
+        SELECT id, name, is_admin AS admin
+        FROM member
+        WHERE id = #{id} AND password = #{password}
+    </select>
+
+
+    <select id="getAllMembers" resultType="com.example.blog.dto.MemberDTO">
+        SELECT member_no, id, password, name, email, created_at, is_admin
+        FROM member
+        ORDER BY member_no DESC
+    </select>
+
+    <delete id="deleteMember" parameterType="int">
+        DELETE FROM member WHERE member_no = #{memberNo}
+    </delete>
+
+    <update id="updateMember" parameterType="com.example.blog.dto.MemberDTO">
+        UPDATE member
+        SET name = #{name}, email = #{email}, is_admin = #{isAdmin}
+        WHERE id = #{id}
+    </update>
+
+    <select id="searchMembers" resultType="com.example.blog.dto.MemberDTO">
+        SELECT * FROM member
+        WHERE id LIKE CONCAT('%', #{keyword}, '%')
+           OR name LIKE CONCAT('%', #{keyword}, '%')
+           OR email LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+
 
 </mapper>
