@@ -71,6 +71,33 @@
         </c:forEach>
         </tbody>
     </table>
+
+
+    <!-- 게시글 테이블 아래에 추가 -->
+    <nav>
+        <ul class="pagination justify-content-center mt-4">
+            <c:if test="${currentPage > 1}">
+                <li class="page-item">
+                    <a class="page-link" href="${pageContext.request.contextPath}/board/list?page=${currentPage - 1}">«</a>
+                </li>
+            </c:if>
+
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                    <a class="page-link" href="${pageContext.request.contextPath}/board/list?page=${i}">${i}</a>
+                </li>
+            </c:forEach>
+
+            <c:if test="${currentPage < totalPages}">
+                <li class="page-item">
+                    <a class="page-link" href="${pageContext.request.contextPath}/board/list?page=${currentPage + 1}">»</a>
+                </li>
+            </c:if>
+        </ul>
+    </nav>
+
+
+
 </div>
 
 <!-- Bootstrap JS -->

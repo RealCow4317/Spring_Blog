@@ -45,4 +45,18 @@
     </select>
 
 
+    <!-- 게시글 전체 개수 (페이징용) -->
+    <select id="countBoards" resultType="int">
+        SELECT COUNT(*) FROM board
+    </select>
+
+    <!-- 페이지에 따른 게시글 목록 조회 -->
+    <select id="getBoardsByPage" resultType="com.example.blog.dto.BoardDTO">
+        SELECT id, title, content, writer, created_at AS createdAt
+        FROM board
+        ORDER BY id DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+
 </mapper>

@@ -16,10 +16,18 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+    // ✅ 페이징 적용된 게시글 목록
     @GetMapping("/list")
-    public String list(Model model) {
-        List<BoardDTO> boards = boardService.getAllBoards();
+    public String list(@RequestParam(defaultValue = "1") int page, Model model) {
+        int pageSize = 5;
+        int total = boardService.countBoards();
+        int totalPages = (int) Math.ceil((double) total / pageSize);
+
+        List<BoardDTO> boards = boardService.getBoardsByPage(page, pageSize);
+
         model.addAttribute("boards", boards);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
         return "board/list";
     }
 

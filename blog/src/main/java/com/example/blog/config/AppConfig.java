@@ -19,7 +19,7 @@ public class AppConfig {
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("org.mariadb.jdbc.Driver");
-        ds.setUrl("jdbc:mariadb://localhost:3306/blog_db");
+        ds.setUrl("jdbc:mariadb://localhost:3307/blog_db");
         ds.setUsername("root");
         ds.setPassword("1004");
         return ds;

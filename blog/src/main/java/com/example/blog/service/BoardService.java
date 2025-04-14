@@ -9,5 +9,9 @@ public interface BoardService {
     void insertBoard(BoardDTO board);
     void updateBoard(BoardDTO board);
     void deleteBoard(int id);
-    List<BoardDTO> getRecentBoards();  // 👈 이거 추가!
+    List<BoardDTO> getRecentBoards();
+
+    int countBoards();
+    List<BoardDTO> getBoardsByPage(int page, int pageSize);
+
 }

@@ -41,4 +41,17 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDTO> getRecentBoards() {
         return boardDAO.getRecentBoards();
     }
+
+
+    @Override
+    public int countBoards() {
+        return boardDAO.countBoards();
+    }
+
+    @Override
+    public List<BoardDTO> getBoardsByPage(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return boardDAO.getBoardsByPage(pageSize, offset);
+    }
+
 }
