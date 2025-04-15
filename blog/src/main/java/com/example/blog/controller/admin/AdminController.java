@@ -75,18 +75,24 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping("/users/edit/{id}")
-    public String editUserForm(@PathVariable String id, Model model) {
-        MemberDTO user = memberService.getMember(id);
+    @GetMapping("/users/edit/{memberNo}")
+    public String editUserForm(@PathVariable int memberNo, Model model) {
+        MemberDTO user = memberService.getMemberByNo(memberNo);
         model.addAttribute("user", user);
         return "admin/users/editForm";
     }
 
+
     @PostMapping("/users/edit")
     public String editUser(MemberDTO user) {
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            MemberDTO original = memberService.getMember(user.getId());
+            user.setPassword(original.getPassword());
+        }
         memberService.updateMember(user);
         return "redirect:/admin/users";
     }
+
 
     @GetMapping("/users/add")
     public String addUserForm() {

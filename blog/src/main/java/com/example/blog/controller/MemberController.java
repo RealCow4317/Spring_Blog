@@ -2,12 +2,13 @@ package com.example.blog.controller;
 
 import com.example.blog.dto.MemberDTO;
 import com.example.blog.service.MemberService;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
@@ -16,15 +17,22 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // 회원가입 폼
     @GetMapping("/join")
     public String joinForm() {
         return "member/join";
     }
 
-    // 회원가입 처리
+    // 회원가입 처리 (비밀번호 암호화 적용)
     @PostMapping("/join")
     public String join(MemberDTO member, HttpSession session) {
+        String rawPassword = member.getPassword();
+        String encryptedPassword = passwordEncoder.encode(rawPassword);
+        member.setPassword(encryptedPassword);
+
         memberService.register(member);
         session.setAttribute("joinSuccess", "회원가입이 완료되었습니다");
         return "redirect:/member/login";
@@ -36,28 +44,19 @@ public class MemberController {
         return "member/login";
     }
 
-    // 로그인 처리
+    // 로그인 처리 (암호 비교 + 실패 메시지 적용)
     @PostMapping("/login")
-    public String login(MemberDTO member, HttpSession session, Model model) {
-        MemberDTO loginUser = memberService.login(member);
-        if (loginUser != null) {
-            session.setAttribute("loginUser", loginUser);
+    public String login(MemberDTO input, HttpSession session, Model model) {
+        MemberDTO dbMember = memberService.getMember(input.getId());
 
-            if (loginUser.isAdmin()) {
-                session.setAttribute("isAdmin", true);
-            }
-
+        if (dbMember != null && passwordEncoder.matches(input.getPassword(), dbMember.getPassword())) {
+            session.setAttribute("loginUser", dbMember);
+            session.setAttribute("isAdmin", dbMember.isAdmin());
             String redirect = (String) session.getAttribute("redirectAfterLogin");
-            if (redirect != null) {
-                session.removeAttribute("redirectAfterLogin");
-                return "redirect:" + redirect;
-            }
-
-            // 기본 redirect
-            session.setAttribute("loginSuccess", loginUser.getName() + "님 환영합니다!");
-            return "redirect:/";
+            return "redirect:" + (redirect != null ? redirect : "/");
         } else {
-            model.addAttribute("error", "ID 또는 비밀번호가 틀렸습니다.");
+            model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
+            model.addAttribute("enteredId", input.getId());
             return "member/login";
         }
     }
@@ -69,7 +68,7 @@ public class MemberController {
         return "redirect:/";
     }
 
-    // 프로필 페이지
+    // 프로필
     @GetMapping("/profile")
     public String profile(HttpSession session, Model model) {
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");

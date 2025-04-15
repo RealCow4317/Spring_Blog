@@ -13,5 +13,6 @@ public interface MemberDAO {
     void deleteMember(int memberNo);
     void updateMember(MemberDTO member);
     List<MemberDTO> searchMembers(@Param("keyword") String keyword);
+    MemberDTO getMemberByNo(int memberNo);
 
 }

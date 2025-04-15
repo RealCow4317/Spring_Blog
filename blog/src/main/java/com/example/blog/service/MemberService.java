@@ -12,5 +12,6 @@ public interface MemberService {
     void deleteMember(int memberNo);
     void updateMember(MemberDTO member);
     List<MemberDTO> searchMembers(String keyword);
+    MemberDTO getMemberByNo(int memberNo);
 
 }

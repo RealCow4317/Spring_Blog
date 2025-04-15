@@ -15,53 +15,55 @@
         <result property="admin" column="is_admin"/>
     </resultMap>
 
-    <!-- ✅ 회원가입 -->
     <insert id="insertMember" parameterType="com.example.blog.dto.MemberDTO">
         INSERT INTO member (id, password, name, email, is_admin)
         VALUES (#{id}, #{password}, #{name}, #{email}, #{admin})
     </insert>
 
-    <!-- ✅ 로그인 -->
     <select id="loginMember" parameterType="com.example.blog.dto.MemberDTO" resultMap="memberResultMap">
         SELECT * FROM member
         WHERE id = #{id} AND password = #{password}
     </select>
 
-    <!-- ✅ ID로 회원 조회 -->
     <select id="getMemberById" parameterType="string" resultMap="memberResultMap">
         SELECT * FROM member
         WHERE id = #{id}
     </select>
 
-    <!-- ✅ ID + 비밀번호로 회원 조회 -->
     <select id="getMemberByIdAndPassword" resultMap="memberResultMap">
         SELECT * FROM member
         WHERE id = #{id} AND password = #{password}
     </select>
 
-    <!-- ✅ 전체 회원 조회 -->
     <select id="getAllMembers" resultMap="memberResultMap">
         SELECT * FROM member ORDER BY member_no DESC
     </select>
 
-    <!-- ✅ 회원 삭제 -->
     <delete id="deleteMember" parameterType="int">
         DELETE FROM member WHERE member_no = #{memberNo}
     </delete>
 
-    <!-- ✅ 회원 수정 -->
     <update id="updateMember" parameterType="com.example.blog.dto.MemberDTO">
         UPDATE member
-        SET name = #{name}, email = #{email}, is_admin = #{admin}
+        SET name = #{name},
+            email = #{email},
+            is_admin = #{admin},
+            password = #{password}
         WHERE id = #{id}
     </update>
 
-    <!-- ✅ 회원 검색 -->
+
+
     <select id="searchMembers" resultMap="memberResultMap">
         SELECT * FROM member
         WHERE id LIKE CONCAT('%', #{keyword}, '%')
            OR name LIKE CONCAT('%', #{keyword}, '%')
            OR email LIKE CONCAT('%', #{keyword}, '%')
     </select>
+
+    <select id="getMemberByNo" parameterType="int" resultMap="memberResultMap">
+        SELECT * FROM member WHERE member_no = #{memberNo}
+    </select>
+
 
 </mapper>
