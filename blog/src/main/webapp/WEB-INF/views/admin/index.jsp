@@ -84,7 +84,12 @@
             <td>${user.id}</td>
             <td>${user.name}</td>
             <td>${user.email}</td>
-            <td><c:choose><c:when test="${user.admin}">✔</c:when><c:otherwise>✖</c:otherwise></c:choose></td>
+            <td>
+              <c:choose>
+                <c:when test="${user.admin}">✔</c:when>
+                <c:otherwise>✖</c:otherwise>
+              </c:choose>
+            </td>
           </tr>
         </c:forEach>
         </tbody>
