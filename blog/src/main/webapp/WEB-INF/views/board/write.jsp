@@ -27,7 +27,7 @@
 
             <div class="mb-3">
                 <label for="writer" class="form-label">작성자</label>
-                <input type="text" class="form-control" id="writer" name="writer" required>
+                <input type="text" class="form-control" id="writer" name="writer" value="${loginUser.id}" readonly>
             </div>
 
             <div class="mb-3">
