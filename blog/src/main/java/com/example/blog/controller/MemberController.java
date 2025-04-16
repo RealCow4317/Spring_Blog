@@ -26,14 +26,9 @@ public class MemberController {
         return "member/join";
     }
 
-    // 회원가입 처리 (비밀번호 암호화 적용)
     @PostMapping("/join")
     public String join(MemberDTO member, HttpSession session) {
-        String rawPassword = member.getPassword();
-        String encryptedPassword = passwordEncoder.encode(rawPassword);
-        member.setPassword(encryptedPassword);
-
-        memberService.register(member);
+        memberService.register(member); // 암호화는 여기서 처리됨
         session.setAttribute("joinSuccess", "회원가입이 완료되었습니다");
         return "redirect:/member/login";
     }
@@ -80,4 +75,20 @@ public class MemberController {
         model.addAttribute("loginUser", loginUser);
         return "member/profile";
     }
+
+    @GetMapping(value = "/check-id", produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String checkId(@RequestParam String id) {
+        return memberService.getMember(id) == null ? "true" : "false";
+    }
+
+    @GetMapping(value = "/check-email", produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String checkEmail(@RequestParam String email) {
+        return memberService.getMemberByEmail(email) == null ? "true" : "false";
+    }
+
+
+
+
 }

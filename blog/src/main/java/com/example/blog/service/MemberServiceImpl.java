@@ -15,12 +15,12 @@ public class MemberServiceImpl implements MemberService {
     private MemberDAO memberDAO;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;  // ✅ 암호화 도구 주입
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void register(MemberDTO member) {
         if (member.getPassword() != null && !member.getPassword().isEmpty()) {
-            member.setPassword(passwordEncoder.encode(member.getPassword()));  // ✅ 암호화
+            member.setPassword(passwordEncoder.encode(member.getPassword()));
         }
         memberDAO.insertMember(member);
     }
@@ -65,5 +65,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDTO getMemberByNo(int memberNo) {
         return memberDAO.getMemberByNo(memberNo);
+    }
+
+    @Override
+    public MemberDTO getMemberByEmail(String email) {
+        return memberDAO.getMemberByEmail(email); // ✅ DAO 호출
     }
 }

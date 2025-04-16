@@ -13,5 +13,6 @@ public interface MemberService {
     void updateMember(MemberDTO member);
     List<MemberDTO> searchMembers(String keyword);
     MemberDTO getMemberByNo(int memberNo);
+    MemberDTO getMemberByEmail(String email);
 
 }
