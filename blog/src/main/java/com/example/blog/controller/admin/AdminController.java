@@ -21,14 +21,9 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
-    private BoardService boardService;
+    @Autowired private MemberService memberService;
+    @Autowired private CategoryService categoryService;
+    @Autowired private BoardService boardService;
 
     @ModelAttribute
     public void checkAdmin(HttpSession session,
@@ -43,30 +38,29 @@ public class AdminController {
 
     @GetMapping
     public String index(Model model) {
-        List<MemberDTO> users = memberService.getAllMembers().subList(0, Math.min(5, memberService.getAllMembers().size()));
+        List<MemberDTO> users = memberService.getAllMembers();
+        if (users.size() > 5) users = users.subList(0, 5);
         List<BoardDTO> recentPosts = boardService.getBoardsByPage(1, 5);
-        List<CategoryDTO> categories = categoryService.getAll().subList(0, Math.min(5, categoryService.getAll().size()));
+        List<CategoryDTO> categories = categoryService.getAll();
+        if (categories.size() > 5) categories = categories.subList(0, 5);
 
         model.addAttribute("users", users);
         model.addAttribute("recentPosts", recentPosts);
         model.addAttribute("categories", categories);
-
         return "admin/index";
     }
 
     @GetMapping("/users")
     public String userList(@RequestParam(required = false) String keyword, Model model) {
         List<MemberDTO> users;
-
         if (keyword != null && !keyword.isEmpty()) {
             users = memberService.searchMembers(keyword);
             model.addAttribute("keyword", keyword);
         } else {
             users = memberService.getAllMembers();
         }
-
         model.addAttribute("users", users);
-        return "admin/users/userList";
+        return "admin/users/list";
     }
 
     @GetMapping("/users/delete/{memberNo}")
@@ -82,7 +76,6 @@ public class AdminController {
         return "admin/users/editForm";
     }
 
-
     @PostMapping("/users/edit")
     public String editUser(MemberDTO user) {
         if (user.getPassword() == null || user.getPassword().isEmpty()) {
@@ -92,7 +85,6 @@ public class AdminController {
         memberService.updateMember(user);
         return "redirect:/admin/users";
     }
-
 
     @GetMapping("/users/add")
     public String addUserForm() {
@@ -104,11 +96,9 @@ public class AdminController {
         memberService.register(user);
         return "redirect:/admin/users";
     }
-
     @GetMapping("/categories")
     public String listCategories(Model model) {
-        List<CategoryDTO> categories = categoryService.getAll();
-        model.addAttribute("categories", categories);
+        model.addAttribute("categories", categoryService.getAll());
         return "admin/category/list";
     }
 
@@ -122,5 +112,61 @@ public class AdminController {
     public String deleteCategory(@PathVariable int id) {
         categoryService.delete(id);
         return "redirect:/admin/categories";
+    }
+
+    @GetMapping("/posts")
+    public String postList(@RequestParam(defaultValue = "1") int page,
+                           @RequestParam(required = false) String keyword,
+                           @RequestParam(required = false) Integer categoryId,
+                           Model model) {
+
+        int pageSize = 10;
+        List<BoardDTO> posts;
+        int total;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            posts = boardService.searchBoards(keyword, page, pageSize);
+            total = boardService.countSearchBoards(keyword);
+            model.addAttribute("keyword", keyword);
+        } else if (categoryId != null) {
+            posts = boardService.getBoardsByCategory(categoryId, page, pageSize);
+            total = boardService.countBoardsByCategory(categoryId);
+            model.addAttribute("selectedCategory", categoryId);
+        } else {
+            posts = boardService.getBoardsByPage(page, pageSize);
+            total = boardService.countBoards();
+        }
+
+        int totalPages = (int) Math.ceil((double) total / pageSize);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+
+        List<CategoryDTO> categories = categoryService.getAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("categoryId", categoryId);
+
+        return "admin/posts/list";
+    }
+
+    @GetMapping("/posts/delete/{id}")
+    public String deletePost(@PathVariable int id) {
+        boardService.deleteBoard(id);
+        return "redirect:/admin/posts";
+    }
+
+    @GetMapping("/posts/edit/{id}")
+    public String editPostForm(@PathVariable int id, Model model) {
+        BoardDTO board = boardService.getBoardById(id);
+        model.addAttribute("board", board);
+        model.addAttribute("categoryList", categoryService.getAll());
+        return "admin/posts/edit";
+    }
+
+    @PostMapping("/posts/edit")
+    public String editPost(BoardDTO board) {
+        boardService.updateBoard(board);
+        return "redirect:/admin/posts";
     }
 }

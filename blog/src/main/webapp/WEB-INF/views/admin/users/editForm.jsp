@@ -6,6 +6,9 @@
   <meta charset="UTF-8">
   <title>회원 수정</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css">
+  <link href="${pageContext.request.contextPath}/css/adminstyle.css" rel="stylesheet">
+  <link rel="icon" href="${pageContext.request.contextPath}/resources/favicon.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -49,5 +52,6 @@
   </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

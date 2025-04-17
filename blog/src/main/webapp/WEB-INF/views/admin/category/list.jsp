@@ -6,10 +6,15 @@
     <meta charset="UTF-8">
     <title>카테고리 관리</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css">
+    <link href="${pageContext.request.contextPath}/css/adminstyle.css" rel="stylesheet">
+    <link rel="icon" href="${pageContext.request.contextPath}/resources/favicon.ico" type="image/x-icon">
 </head>
-<body class="p-5">
+<body">
 
-<div class="container">
+<%@ include file="/WEB-INF/views/common/adminNav.jsp" %>
+
+<div class="container mt-5">
     <h2 class="mb-4">📂 카테고리 관리</h2>
 
     <!-- 카테고리 추가 폼 -->
@@ -44,6 +49,6 @@
         </tbody>
     </table>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

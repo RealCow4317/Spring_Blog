@@ -88,6 +88,7 @@ public class MemberController {
         return memberService.getMemberByEmail(email) == null ? "true" : "false";
     }
 
+    //비밀번호
 
 
 

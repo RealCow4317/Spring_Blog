@@ -1,0 +1,70 @@
+body {
+    font-family: 'Pretendard', sans-serif;
+    background-color: #f8f9fa;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.offcanvas {
+    background-color: #343a40;
+    color: white;
+}
+
+.board-preview .card {
+    margin-bottom: 20px;
+}
+
+.view-more-btn {
+    text-align: right;
+}
+.card {
+    padding: 20px;
+}
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+.admin-sidebar {
+    width: 220px;
+    background-color: #343a40;
+    padding: 20px;
+    color: white;
+}
+.admin-sidebar h5 {
+    color: #fff;
+    margin-bottom: 15px;
+}
+.admin-sidebar a {
+    display: block;
+    margin-bottom: 10px;
+    color: #ccc;
+    text-decoration: none;
+}
+.admin-sidebar a:hover {
+    color: #fff;
+}
+.admin-content {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #f8f9fa;
+}
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+.view-more {
+    text-align: right;
+    margin-top: -15px;
+    margin-bottom: 30px;
+}

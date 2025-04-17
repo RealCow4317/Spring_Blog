@@ -6,41 +6,9 @@
     <meta charset="UTF-8">
     <title>회원 목록</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-    <style>
-        .admin-layout {
-            display: flex;
-            min-height: 100vh;
-        }
-        .admin-sidebar {
-            width: 220px;
-            background-color: #343a40;
-            padding: 20px;
-            color: white;
-        }
-        .admin-sidebar h5 {
-            color: #fff;
-            margin-bottom: 15px;
-        }
-        .admin-sidebar a {
-            display: block;
-            margin-bottom: 10px;
-            color: #ccc;
-            text-decoration: none;
-        }
-        .admin-sidebar a:hover {
-            color: #fff;
-        }
-        .admin-content {
-            flex-grow: 1;
-            padding: 30px;
-            background-color: #f8f9fa;
-        }
-        .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css">
+    <link href="${pageContext.request.contextPath}/css/adminstyle.css" rel="stylesheet">
+    <link rel="icon" href="${pageContext.request.contextPath}/resources/favicon.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -48,16 +16,10 @@
 
 <div class="admin-layout">
     <!-- 사이드바 -->
-    <div class="admin-sidebar">
-        <h5>회원 관리</h5>
-        <a href="${pageContext.request.contextPath}/admin/users">유저 리스트</a>
-        <h5 class="mt-4">콘텐츠 관리</h5>
-        <a href="${pageContext.request.contextPath}/admin/posts">게시글 관리</a>
-        <a href="${pageContext.request.contextPath}/admin/categories">카테고리 관리</a>
-    </div>
+
 
     <!-- 본문 -->
-    <div class="admin-content">
+    <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>👥 전체 회원 목록</h2>
             <a href="${pageContext.request.contextPath}/admin/users/add" class="btn btn-success btn-sm">+ 회원 추가</a>

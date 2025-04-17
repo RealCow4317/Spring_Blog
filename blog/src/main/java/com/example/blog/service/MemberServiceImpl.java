@@ -69,6 +69,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDTO getMemberByEmail(String email) {
-        return memberDAO.getMemberByEmail(email); // ✅ DAO 호출
+        return memberDAO.getMemberByEmail(email);
     }
+
 }

@@ -14,6 +14,5 @@ public interface MemberDAO {
     void updateMember(MemberDTO member);
     List<MemberDTO> searchMembers(@Param("keyword") String keyword);
     MemberDTO getMemberByNo(int memberNo);
-    MemberDTO getMemberByEmail(String email); // ✅ 추가
-
+    MemberDTO getMemberByEmail(String email);
 }
