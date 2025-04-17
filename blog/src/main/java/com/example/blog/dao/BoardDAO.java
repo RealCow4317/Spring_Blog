@@ -1,17 +1,20 @@
 package com.example.blog.dao;
 
 import java.util.List;
-
-import com.example.blog.dto.MemberDTO;
 import org.apache.ibatis.annotations.Param;
 import com.example.blog.dto.BoardDTO;
 
 public interface BoardDAO {
     List<BoardDTO> getAllBoards();
+
     BoardDTO getBoardById(int id);
+
     void insertBoard(BoardDTO board);
+
     void updateBoard(BoardDTO board);
+
     void deleteBoard(int id);
+
     List<BoardDTO> getRecentBoards();
 
     int countBoards();
@@ -23,7 +26,20 @@ public interface BoardDAO {
 
     // 검색
     int countSearchBoards(@Param("keyword") String keyword);
+
     List<BoardDTO> searchBoards(
+            @Param("keyword") String keyword,
+            @Param("limit") int limit,
+            @Param("offset") int offset
+    );
+
+    int countBoardsByCategoryAndKeyword(
+            @Param("categoryId") int categoryId,
+            @Param("keyword") String keyword
+    );
+
+    List<BoardDTO> searchBoardsByCategoryAndKeyword(
+            @Param("categoryId") int categoryId,
             @Param("keyword") String keyword,
             @Param("limit") int limit,
             @Param("offset") int offset
@@ -36,5 +52,4 @@ public interface BoardDAO {
             @Param("limit") int limit,
             @Param("offset") int offset
     );
-
 }

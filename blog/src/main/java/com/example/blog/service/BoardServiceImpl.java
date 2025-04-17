@@ -74,4 +74,15 @@ public class BoardServiceImpl implements BoardService {
         int offset = (page - 1) * pageSize;
         return boardDAO.getBoardsByCategory(categoryId, pageSize, offset);
     }
+
+    @Override
+    public int countBoardsByCategoryAndKeyword(int categoryId, String keyword) {
+        return boardDAO.countBoardsByCategoryAndKeyword(categoryId, keyword);
+    }
+
+    @Override
+    public List<BoardDTO> searchBoardsByCategoryAndKeyword(int categoryId, String keyword, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return boardDAO.searchBoardsByCategoryAndKeyword(categoryId, keyword, pageSize, offset);
+    }
 }

@@ -18,6 +18,11 @@ public interface BoardService {
     int countSearchBoards(String keyword);
     List<BoardDTO> searchBoards(String keyword, int page, int pageSize);
 
+    int countBoardsByCategoryAndKeyword(int categoryId, String keyword);
+    List<BoardDTO> searchBoardsByCategoryAndKeyword(int categoryId, String keyword, int page, int pageSize);
+
     int countBoardsByCategory(int categoryId);
     List<BoardDTO> getBoardsByCategory(int categoryId, int page, int pageSize);
+
+
 }

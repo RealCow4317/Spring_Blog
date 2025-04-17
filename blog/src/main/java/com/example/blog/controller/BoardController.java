@@ -41,7 +41,12 @@ public class BoardController {
         List<BoardDTO> boards;
         int total;
 
-        if (keyword != null && !keyword.isEmpty()) {
+        if (keyword != null && !keyword.isEmpty() && categoryId != null) {
+            boards = boardService.searchBoardsByCategoryAndKeyword(categoryId, keyword, page, pageSize);
+            total = boardService.countBoardsByCategoryAndKeyword(categoryId, keyword);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("selectedCategory", categoryId);
+        } else if (keyword != null && !keyword.isEmpty()) {
             boards = boardService.searchBoards(keyword, page, pageSize);
             total = boardService.countSearchBoards(keyword);
             model.addAttribute("keyword", keyword);
@@ -63,6 +68,7 @@ public class BoardController {
 
         return "board/list";
     }
+
 
     @GetMapping("/view/{id}")
     public String view(@PathVariable int id, HttpSession session, Model model) {

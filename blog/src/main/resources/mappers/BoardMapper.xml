@@ -87,6 +87,29 @@
            OR writer LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
+
+    <select id="searchBoardsByCategoryAndKeyword" resultType="com.example.blog.dto.BoardDTO">
+        SELECT b.id, b.title, b.content, b.writer, b.created_at AS createdAt,
+               b.category_id AS categoryId, c.name AS categoryName
+        FROM board b
+                 LEFT JOIN category c ON b.category_id = c.id
+        WHERE b.category_id = #{categoryId}
+          AND (b.title LIKE CONCAT('%', #{keyword}, '%')
+            OR b.content LIKE CONCAT('%', #{keyword}, '%')
+            OR b.writer LIKE CONCAT('%', #{keyword}, '%'))
+        ORDER BY b.id DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="countBoardsByCategoryAndKeyword" resultType="int">
+        SELECT COUNT(*)
+        FROM board
+        WHERE category_id = #{categoryId}
+          AND (title LIKE CONCAT('%', #{keyword}, '%')
+            OR content LIKE CONCAT('%', #{keyword}, '%')
+            OR writer LIKE CONCAT('%', #{keyword}, '%'))
+    </select>
+
 <!--    카테고리-->
     <select id="getBoardsByCategory" resultType="com.example.blog.dto.BoardDTO">
         SELECT b.id, b.title, b.content, b.writer, b.created_at AS createdAt,
