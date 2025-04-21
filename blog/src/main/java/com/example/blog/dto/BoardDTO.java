@@ -10,8 +10,9 @@ public class BoardDTO {
     private Timestamp createdAt;
     private int categoryId;
     private String categoryName;
+    private boolean pinned;
 
-    // Getters/Setters
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -32,4 +33,12 @@ public class BoardDTO {
 
     public String getCategoryName() { return categoryName; }
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+
+    public boolean isPinned() {
+        return pinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
 }

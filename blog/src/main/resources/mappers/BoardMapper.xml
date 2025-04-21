@@ -5,80 +5,84 @@
 
 <mapper namespace="com.example.blog.dao.BoardDAO">
 
-    <select id="getAllBoards" resultType="com.example.blog.dto.BoardDTO">
-        SELECT b.id, b.title, b.content, b.writer, b.created_at AS createdAt,
-               b.category_id AS categoryId, c.name AS categoryName
+    <!-- resultMap 정의 -->
+    <resultMap id="boardResultMap" type="com.example.blog.dto.BoardDTO">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="writer" column="writer"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="categoryName" column="categoryName"/>
+        <result property="pinned" column="pinned"/>
+    </resultMap>
+
+    <select id="getAllBoards" resultMap="boardResultMap">
+        SELECT b.id, b.title, b.content, b.writer, b.created_at,
+               b.category_id, c.name AS categoryName, b.pinned
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         ORDER BY b.id DESC
     </select>
 
-    <!-- 게시글 상세 조회 -->
-    <select id="getBoardById" parameterType="int" resultType="com.example.blog.dto.BoardDTO">
-        SELECT b.id, b.title, b.content, b.writer, b.created_at AS createdAt,
-               b.category_id AS categoryId, c.name AS categoryName
+    <select id="getBoardById" parameterType="int" resultMap="boardResultMap">
+        SELECT b.id, b.title, b.content, b.writer, b.created_at,
+               b.category_id, c.name AS categoryName, b.pinned
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         WHERE b.id = #{id}
     </select>
 
-    <!-- 게시글 등록 -->
     <insert id="insertBoard" parameterType="com.example.blog.dto.BoardDTO">
-        INSERT INTO board (title, content, writer, category_id)
-        VALUES (#{title}, #{content}, #{writer}, #{categoryId})
+        INSERT INTO board (title, content, writer, category_id, pinned)
+        VALUES (#{title}, #{content}, #{writer}, #{categoryId}, #{pinned})
     </insert>
 
-    <!-- 게시글 수정 -->
     <update id="updateBoard" parameterType="com.example.blog.dto.BoardDTO">
         UPDATE board
-        SET title = #{title}, content = #{content}, category_id = #{categoryId}
+        SET title = #{title}, content = #{content}, category_id = #{categoryId}, pinned = #{pinned}
         WHERE id = #{id}
     </update>
 
-    <!-- 게시글 삭제 -->
     <delete id="deleteBoard" parameterType="int">
         DELETE FROM board WHERE id = #{id}
     </delete>
 
-    <!-- 최근 게시글 (인덱스용) -->
-    <select id="getRecentBoards" resultType="com.example.blog.dto.BoardDTO">
-        SELECT b.id, b.title, b.content, b.writer, b.created_at AS createdAt,
-               b.category_id AS categoryId, c.name AS categoryName
+    <select id="getRecentBoards" resultMap="boardResultMap">
+        SELECT b.id, b.title, b.content, b.writer, b.created_at,
+               b.category_id, c.name AS categoryName, b.pinned
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         ORDER BY b.created_at DESC
             LIMIT 4
     </select>
 
-    <!-- 게시글 전체 개수 -->
     <select id="countBoards" resultType="int">
         SELECT COUNT(*) FROM board
     </select>
 
-    <!-- 페이지별 게시글 -->
-    <select id="getBoardsByPage" resultType="com.example.blog.dto.BoardDTO">
-        SELECT b.id, b.title, b.content, b.writer, b.created_at AS createdAt,
-               b.category_id AS categoryId, c.name AS categoryName
+    <select id="getBoardsByPage" resultMap="boardResultMap">
+        SELECT b.id, b.title, b.content, b.writer, b.created_at,
+               b.category_id, c.name AS categoryName, b.pinned
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
-        ORDER BY b.id DESC
+        ORDER BY b.pinned DESC, b.id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <!-- 검색 결과 조회 -->
-    <select id="searchBoards" resultType="com.example.blog.dto.BoardDTO">
-        SELECT b.id, b.title, b.content, b.writer, b.created_at AS createdAt,
-               b.category_id AS categoryId, c.name AS categoryName
+    <select id="searchBoards" resultMap="boardResultMap">
+        SELECT b.id, b.title, b.content, b.writer, b.created_at,
+               b.category_id, c.name AS categoryName, b.pinned
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         WHERE b.title LIKE CONCAT('%', #{keyword}, '%')
            OR b.content LIKE CONCAT('%', #{keyword}, '%')
            OR b.writer LIKE CONCAT('%', #{keyword}, '%')
-        ORDER BY b.id DESC
+        ORDER BY b.pinned DESC, b.id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <!-- 검색 결과 총 개수 -->
+
     <select id="countSearchBoards" resultType="int">
         SELECT COUNT(*)
         FROM board
@@ -87,19 +91,19 @@
            OR writer LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
-
-    <select id="searchBoardsByCategoryAndKeyword" resultType="com.example.blog.dto.BoardDTO">
-        SELECT b.id, b.title, b.content, b.writer, b.created_at AS createdAt,
-               b.category_id AS categoryId, c.name AS categoryName
+    <select id="searchBoardsByCategoryAndKeyword" resultMap="boardResultMap">
+        SELECT b.id, b.title, b.content, b.writer, b.created_at,
+               b.category_id, c.name AS categoryName, b.pinned
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         WHERE b.category_id = #{categoryId}
           AND (b.title LIKE CONCAT('%', #{keyword}, '%')
             OR b.content LIKE CONCAT('%', #{keyword}, '%')
             OR b.writer LIKE CONCAT('%', #{keyword}, '%'))
-        ORDER BY b.id DESC
+        ORDER BY b.pinned DESC, b.id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
+
 
     <select id="countBoardsByCategoryAndKeyword" resultType="int">
         SELECT COUNT(*)
@@ -110,16 +114,16 @@
             OR writer LIKE CONCAT('%', #{keyword}, '%'))
     </select>
 
-<!--    카테고리-->
-    <select id="getBoardsByCategory" resultType="com.example.blog.dto.BoardDTO">
-        SELECT b.id, b.title, b.content, b.writer, b.created_at AS createdAt,
-               b.category_id AS categoryId, c.name AS categoryName
+    <select id="getBoardsByCategory" resultMap="boardResultMap">
+        SELECT b.id, b.title, b.content, b.writer, b.created_at,
+               b.category_id, c.name AS categoryName, b.pinned
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         WHERE b.category_id = #{categoryId}
-        ORDER BY b.id DESC
+        ORDER BY b.pinned DESC, b.id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
+
 
     <select id="countBoardsByCategory" resultType="int">
         SELECT COUNT(*) FROM board WHERE category_id = #{categoryId}

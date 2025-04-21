@@ -20,11 +20,9 @@
 </head>
 <body>
 
-<!-- 상단 네비게이션 -->
 <%@ include file="/WEB-INF/views/common/nav.jsp" %>
 <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 
-<!-- 본문 -->
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>📋 게시글 목록</h2>
@@ -63,15 +61,33 @@
         </tr>
         </thead>
         <tbody>
+
+        <!-- ✅ 고정 게시글 먼저 출력 -->
         <c:forEach var="board" items="${boards}">
-            <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'">
-                <td>${board.id}</td>
-                <td>${board.categoryName}</td>
-                <td class="text-primary">${board.title}</td>
-                <td>${board.writer}</td>
-                <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
-            </tr>
+            <c:if test="${board.pinned}">
+                <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'" class="table-warning">
+                    <td>📌</td>
+                    <td>${board.categoryName}</td>
+                    <td class="text-primary fw-bold">${board.title}</td>
+                    <td>${board.writer}</td>
+                    <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                </tr>
+            </c:if>
         </c:forEach>
+
+        <!-- ✅ 일반 게시글 출력 -->
+        <c:forEach var="board" items="${boards}">
+            <c:if test="${!board.pinned}">
+                <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'">
+                    <td>${board.id}</td>
+                    <td>${board.categoryName}</td>
+                    <td class="text-primary">${board.title}</td>
+                    <td>${board.writer}</td>
+                    <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                </tr>
+            </c:if>
+        </c:forEach>
+
         </tbody>
     </table>
 
@@ -99,7 +115,6 @@
             </c:if>
         </ul>
     </nav>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

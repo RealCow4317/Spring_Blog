@@ -169,4 +169,20 @@ public class AdminController {
         boardService.updateBoard(board);
         return "redirect:/admin/posts";
     }
+
+    @GetMapping("/posts/write")
+    public String writePostForm(Model model) {
+        model.addAttribute("categoryList", categoryService.getAll());
+        return "admin/posts/write"; // write.jsp로 이동
+    }
+
+    @PostMapping("/posts/write")
+    public String writePost(BoardDTO board, HttpSession session) {
+        MemberDTO admin = (MemberDTO) session.getAttribute("loginUser");
+        board.setWriter(admin.getId()); // 관리자 ID를 작성자로 저장
+        boardService.insertBoard(board);
+        return "redirect:/admin/posts";
+    }
+
+
 }

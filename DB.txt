@@ -7,6 +7,7 @@ CREATE TABLE `board` (
 	`writer` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_general_ci',
 	`created_at` DATETIME NULL DEFAULT current_timestamp(),
 	`category_id` INT(11) NULL DEFAULT NULL,
+	`pinned` TINYINT(1) NULL DEFAULT '0',
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `fk_board_category` (`category_id`) USING BTREE,
 	CONSTRAINT `fk_board_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON UPDATE RESTRICT ON DELETE SET NULL
@@ -15,6 +16,7 @@ COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
 AUTO_INCREMENT=495
 ;
+
 
 
 CREATE TABLE `category` (
