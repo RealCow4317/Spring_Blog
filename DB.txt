@@ -8,15 +8,15 @@ CREATE TABLE `board` (
 	`created_at` DATETIME NULL DEFAULT current_timestamp(),
 	`category_id` INT(11) NULL DEFAULT NULL,
 	`pinned` TINYINT(1) NULL DEFAULT '0',
+	`image` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `fk_board_category` (`category_id`) USING BTREE,
 	CONSTRAINT `fk_board_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON UPDATE RESTRICT ON DELETE SET NULL
 )
 COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=495
+AUTO_INCREMENT=499
 ;
-
 
 
 CREATE TABLE `category` (
@@ -27,6 +27,22 @@ CREATE TABLE `category` (
 COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
 AUTO_INCREMENT=8
+;
+
+
+CREATE TABLE `comment` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`board_id` INT(11) NOT NULL,
+	`writer` VARCHAR(100) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`content` TEXT NOT NULL COLLATE 'utf8mb4_general_ci',
+	`created_at` DATETIME NULL DEFAULT current_timestamp(),
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `board_id` (`board_id`) USING BTREE,
+	CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`board_id`) REFERENCES `board` (`id`) ON UPDATE RESTRICT ON DELETE CASCADE
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=7
 ;
 
 
@@ -45,3 +61,4 @@ COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
 AUTO_INCREMENT=20
 ;
+
