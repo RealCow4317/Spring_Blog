@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.example.blog.dto.BoardDTO;
 import com.example.blog.dto.CategoryDTO;
+import com.example.blog.dto.CommentDTO;
 import com.example.blog.dto.MemberDTO;
 import com.example.blog.service.BoardService;
 import com.example.blog.service.CategoryService;
+import com.example.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ public class BoardController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private CommentService commentService;
 
 
     @GetMapping("/list")
@@ -59,6 +64,11 @@ public class BoardController {
             total = boardService.countBoards();
         }
 
+        for (BoardDTO board : boards) {
+            int count = commentService.countByBoardId(board.getId());
+            board.setCommentCount(count);
+        }
+
         int totalPages = (int) Math.ceil((double) total / pageSize);
         model.addAttribute("boards", boards);
         model.addAttribute("currentPage", page);
@@ -71,15 +81,13 @@ public class BoardController {
 
 
     @GetMapping("/view/{id}")
-    public String view(@PathVariable int id, HttpSession session, Model model) {
-        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            return "redirect:/member/login";
-        }
-
+    public String view(@PathVariable int id, Model model) {
         BoardDTO board = boardService.getBoardById(id);
+        List<CommentDTO> comments = commentService.getCommentsByBoardId(id);
+
         model.addAttribute("board", board);
-        model.addAttribute("loginUser", loginUser);
+        model.addAttribute("comments", comments);
+
         return "board/view";
     }
 

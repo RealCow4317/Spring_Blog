@@ -68,7 +68,12 @@
                 <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'" class="table-warning">
                     <td>📌</td>
                     <td>${board.categoryName}</td>
-                    <td class="text-primary fw-bold">${board.title}</td>
+                    <td class="text-primary fw-bold">
+                            ${board.title}
+                        <c:if test="${board.commentCount > 0}">
+                            <span class="text-muted">(${board.commentCount})</span>
+                        </c:if>
+                    </td>
                     <td>${board.writer}</td>
                     <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
                 </tr>
@@ -81,7 +86,12 @@
                 <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'">
                     <td>${board.id}</td>
                     <td>${board.categoryName}</td>
-                    <td class="text-primary">${board.title}</td>
+                    <td class="text-primary">
+                            ${board.title}
+                        <c:if test="${board.commentCount > 0}">
+                            <span class="text-muted">(${board.commentCount})</span>
+                        </c:if>
+                    </td>
                     <td>${board.writer}</td>
                     <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
                 </tr>

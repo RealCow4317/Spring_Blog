@@ -11,7 +11,7 @@ public class BoardDTO {
     private int categoryId;
     private String categoryName;
     private boolean pinned;
-
+    private int commentCount;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -41,4 +41,15 @@ public class BoardDTO {
     public void setPinned(boolean pinned) {
         this.pinned = pinned;
     }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+
+
 }

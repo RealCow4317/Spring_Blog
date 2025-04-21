@@ -21,7 +21,10 @@
 <%@ include file="/WEB-INF/views/common/adminNav.jsp" %>
 
 <div class="container mt-5">
-    <h2 class="mb-4">📋 게시글 관리</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📋 게시글 관리</h2>
+        <a href="${pageContext.request.contextPath}/admin/posts/write" class="btn btn-primary">➕ 새 글 작성</a>
+    </div>
 
     <!-- 검색 & 카테고리 필터 -->
     <form method="get" action="${pageContext.request.contextPath}/admin/posts" class="row g-2 mb-4">
@@ -50,30 +53,24 @@
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
-            <th>관리</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach var="post" items="${posts}">
-            <tr>
+            <tr onclick="location.href='${pageContext.request.contextPath}/admin/posts/view/${post.id}'">
                 <td>${post.id}</td>
                 <td>${post.categoryName}</td>
-                <td>
-                        ${post.pinned ? "📌 " : ""}${post.title}
+                <td>${post.pinned ? "📌 " : ""}${post.title}
+                    <c:if test="${post.commentCount > 0}">
+                        <span class="text-muted small">(${post.commentCount})</span>
+                    </c:if>
                 </td>
                 <td>${post.writer}</td>
                 <td><fmt:formatDate value="${post.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
-                <td>
-                    <a href="${pageContext.request.contextPath}/admin/posts/edit/${post.id}" class="btn btn-sm btn-warning">수정</a>
-                    <a href="${pageContext.request.contextPath}/admin/posts/delete/${post.id}" class="btn btn-sm btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
-                </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-
-    <a href="${pageContext.request.contextPath}/admin/posts/write" class="btn btn-primary mb-3">➕ 새 글 작성</a>
-
 
     <!-- 페이징 -->
     <nav>

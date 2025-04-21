@@ -2,9 +2,11 @@ package com.example.blog.controller.admin;
 
 import com.example.blog.dto.BoardDTO;
 import com.example.blog.dto.CategoryDTO;
+import com.example.blog.dto.CommentDTO;
 import com.example.blog.dto.MemberDTO;
 import com.example.blog.service.BoardService;
 import com.example.blog.service.CategoryService;
+import com.example.blog.service.CommentService;
 import com.example.blog.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ public class AdminController {
     @Autowired private MemberService memberService;
     @Autowired private CategoryService categoryService;
     @Autowired private BoardService boardService;
+    @Autowired private CommentService commentService;
 
     @ModelAttribute
     public void checkAdmin(HttpSession session,
@@ -96,6 +99,7 @@ public class AdminController {
         memberService.register(user);
         return "redirect:/admin/users";
     }
+
     @GetMapping("/categories")
     public String listCategories(Model model) {
         model.addAttribute("categories", categoryService.getAll());
@@ -124,7 +128,13 @@ public class AdminController {
         List<BoardDTO> posts;
         int total;
 
-        if (keyword != null && !keyword.isEmpty()) {
+        if (keyword != null && !keyword.isEmpty() && categoryId != null) {
+            // ✅ 카테고리 + 검색어 조합 조건
+            posts = boardService.searchBoardsByCategoryAndKeyword(categoryId, keyword, page, pageSize);
+            total = boardService.countBoardsByCategoryAndKeyword(categoryId, keyword);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("selectedCategory", categoryId);
+        } else if (keyword != null && !keyword.isEmpty()) {
             posts = boardService.searchBoards(keyword, page, pageSize);
             total = boardService.countSearchBoards(keyword);
             model.addAttribute("keyword", keyword);
@@ -137,18 +147,22 @@ public class AdminController {
             total = boardService.countBoards();
         }
 
+        for (BoardDTO post : posts) {
+            int commentCount = commentService.countByBoardId(post.getId());
+            post.setCommentCount(commentCount);
+        }
+
         int totalPages = (int) Math.ceil((double) total / pageSize);
 
         model.addAttribute("posts", posts);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
-
-        List<CategoryDTO> categories = categoryService.getAll();
-        model.addAttribute("categories", categories);
+        model.addAttribute("categories", categoryService.getAll());
         model.addAttribute("categoryId", categoryId);
 
         return "admin/posts/list";
     }
+
 
     @GetMapping("/posts/delete/{id}")
     public String deletePost(@PathVariable int id) {
@@ -173,16 +187,24 @@ public class AdminController {
     @GetMapping("/posts/write")
     public String writePostForm(Model model) {
         model.addAttribute("categoryList", categoryService.getAll());
-        return "admin/posts/write"; // write.jsp로 이동
+        return "admin/posts/write";
     }
 
     @PostMapping("/posts/write")
     public String writePost(BoardDTO board, HttpSession session) {
         MemberDTO admin = (MemberDTO) session.getAttribute("loginUser");
-        board.setWriter(admin.getId()); // 관리자 ID를 작성자로 저장
+        board.setWriter(admin.getId());
         boardService.insertBoard(board);
         return "redirect:/admin/posts";
     }
 
+    @GetMapping("/posts/view/{id}")
+    public String viewPost(@PathVariable int id, Model model) {
+        BoardDTO board = boardService.getBoardById(id);
+        List<CommentDTO> comments = commentService.getCommentsByBoardId(id);
 
+        model.addAttribute("board", board);
+        model.addAttribute("comments", comments);
+        return "admin/posts/view";
+    }
 }
