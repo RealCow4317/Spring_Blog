@@ -39,7 +39,7 @@ public class MemberController {
         return "member/login";
     }
 
-    // 로그인 처리 (암호 비교 + 실패 메시지 적용)
+    // 로그인 처리
     @PostMapping("/login")
     public String login(MemberDTO input, HttpSession session, Model model) {
         MemberDTO dbMember = memberService.getMember(input.getId());

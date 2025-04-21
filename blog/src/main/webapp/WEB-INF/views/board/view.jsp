@@ -37,7 +37,6 @@
         </div>
     </div>
 
-    <!-- ✅ 댓글 리스트 -->
     <div class="card p-4 mb-4">
         <h5>💬 댓글</h5>
         <c:choose>
@@ -63,8 +62,6 @@
             </c:otherwise>
         </c:choose>
     </div>
-
-    <!-- ✅ 댓글 작성 -->
     <c:if test="${not empty loginUser}">
         <form action="${pageContext.request.contextPath}/comment/add" method="post" class="card p-4 shadow-sm">
             <input type="hidden" name="boardId" value="${board.id}" />

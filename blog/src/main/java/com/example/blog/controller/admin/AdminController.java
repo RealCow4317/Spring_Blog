@@ -129,7 +129,6 @@ public class AdminController {
         int total;
 
         if (keyword != null && !keyword.isEmpty() && categoryId != null) {
-            // ✅ 카테고리 + 검색어 조합 조건
             posts = boardService.searchBoardsByCategoryAndKeyword(categoryId, keyword, page, pageSize);
             total = boardService.countBoardsByCategoryAndKeyword(categoryId, keyword);
             model.addAttribute("keyword", keyword);

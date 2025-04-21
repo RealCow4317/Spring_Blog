@@ -62,7 +62,6 @@
         </thead>
         <tbody>
 
-        <!-- ✅ 고정 게시글 먼저 출력 -->
         <c:forEach var="board" items="${boards}">
             <c:if test="${board.pinned}">
                 <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'" class="table-warning">
@@ -80,7 +79,6 @@
             </c:if>
         </c:forEach>
 
-        <!-- ✅ 일반 게시글 출력 -->
         <c:forEach var="board" items="${boards}">
             <c:if test="${!board.pinned}">
                 <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'">

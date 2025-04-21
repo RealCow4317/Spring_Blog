@@ -46,7 +46,6 @@
                 <textarea id="content" name="content" class="form-control" rows="8" required>${board.content}</textarea>
             </div>
 
-            <!-- 📌 고정 여부 -->
             <div class="form-check mb-4">
                 <input type="checkbox" class="form-check-input" id="pinned" name="pinned" ${board.pinned ? 'checked' : ''}>
                 <label class="form-check-label" for="pinned">📌 이 게시글을 고정합니다</label>
