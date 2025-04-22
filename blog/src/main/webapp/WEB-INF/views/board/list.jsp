@@ -6,6 +6,7 @@
 <head>
     <title>게시판 목록</title>
     <%@ include file="/WEB-INF/views/common/userHead.jsp" %>
+    <link href="${pageContext.request.contextPath}/css/listStyle.css" rel="stylesheet">
 </head>
 <body>
 
