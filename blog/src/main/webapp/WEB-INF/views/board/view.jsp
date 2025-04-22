@@ -22,7 +22,9 @@
         <p><strong>작성자:</strong> ${board.writer}</p>
         <p><strong>작성일:</strong> <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm" /></p>
         <hr>
-        <p>${board.content}</p>
+
+        <!-- Summernote 내용 HTML 렌더링 -->
+        <c:out value="${board.content}" escapeXml="false" />
 
         <div class="mt-4">
             <c:if test="${not empty loginUser and loginUser.id eq board.writer}">
@@ -33,6 +35,7 @@
         </div>
     </div>
 
+    <!-- 댓글 리스트 -->
     <div class="card p-4 mb-4">
         <h5>💬 댓글</h5>
         <c:choose>
@@ -58,6 +61,8 @@
             </c:otherwise>
         </c:choose>
     </div>
+
+    <!-- 댓글 작성 -->
     <c:if test="${not empty loginUser}">
         <form action="${pageContext.request.contextPath}/comment/add" method="post" class="card p-4 shadow-sm">
             <input type="hidden" name="boardId" value="${board.id}" />

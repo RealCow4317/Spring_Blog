@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
     <title>게시글 수정</title>
-    <%@ include file="/WEB-INF/views/common/userHead.jsp" %>
+    <%@ include file="/WEB-INF/views/common/userHead.jsp" %>  <!-- Summernote 포함됨 -->
 </head>
 <body>
 
@@ -58,6 +58,41 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Summernote 이미지 업로드 스크립트 -->
+<script>
+    $(document).ready(function () {
+        $('#content').summernote({
+            height: 300,
+            lang: 'ko-KR',
+            callbacks: {
+                onImageUpload: function (files) {
+                    for (let i = 0; i < files.length; i++) {
+                        sendFile(files[i]);
+                    }
+                }
+            }
+        });
+
+        function sendFile(file) {
+            const data = new FormData();
+            data.append('file', file);
+            $.ajax({
+                url: '${pageContext.request.contextPath}/upload/image',
+                method: 'POST',
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (url) {
+                    $('#content').summernote('insertImage', url);
+                },
+                error: function () {
+                    alert("이미지 업로드 실패");
+                }
+            });
+        }
+    });
+</script>
+
+<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>
 </html>

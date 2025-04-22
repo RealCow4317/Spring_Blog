@@ -15,7 +15,6 @@
     <h2 class="mb-4">게시글 작성</h2>
     <div class="card p-4">
         <form action="${pageContext.request.contextPath}/board/write" method="post">
-
             <div class="mb-3">
                 <label for="title" class="form-label">제목</label>
                 <input type="text" class="form-control" id="title" name="title" required>
@@ -38,10 +37,9 @@
 
             <div class="mb-3">
                 <label for="content" class="form-label">내용</label>
-                <textarea class="form-control" id="content" name="content" rows="8" required></textarea>
+                <textarea class="form-control" id="content" name="content" rows="8"></textarea>
             </div>
 
-            <!-- 관리자일 때만 고정 체크박스 표시 -->
             <c:if test="${isAdmin}">
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="pinned" name="pinned" value="true">
@@ -57,6 +55,44 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Summernote -->
+<script>
+    $(document).ready(function () {
+        $('#content').summernote({
+            height: 300,
+            lang: 'ko-KR',
+            callbacks: {
+                onImageUpload: function (files) {
+                    for (let i = 0; i < files.length; i++) {
+                        sendFile(files[i]);
+                    }
+                }
+            }
+        });
+
+        function sendFile(file) {
+            const data = new FormData();
+            data.append("file", file);
+
+            $.ajax({
+                url: '${pageContext.request.contextPath}/upload/image',
+                method: 'POST',
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (url) {
+                    $('#content').summernote('insertImage', url);
+                },
+                error: function (xhr, status, error) {
+                    console.error("업로드 실패:", xhr.responseText);
+                    alert("이미지 업로드 실패: " + error);
+                }
+            });
+        }
+    });
+</script>
+
+
+<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>
 </html>
