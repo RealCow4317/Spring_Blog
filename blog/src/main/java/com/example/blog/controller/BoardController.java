@@ -81,7 +81,12 @@ public class BoardController {
 
 
     @GetMapping("/view/{id}")
-    public String view(@PathVariable int id, Model model) {
+    public String view(@PathVariable int id, Model model, HttpSession session) {
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/member/login";
+        }
+
         BoardDTO board = boardService.getBoardById(id);
         List<CommentDTO> comments = commentService.getCommentsByBoardId(id);
 
@@ -90,6 +95,7 @@ public class BoardController {
 
         return "board/view";
     }
+
 
 
     @GetMapping("/write")

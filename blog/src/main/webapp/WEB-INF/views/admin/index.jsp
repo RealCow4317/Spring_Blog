@@ -3,21 +3,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>관리자 대시보드</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Pretendard Web Font -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css">
-  <!-- 관리자 전용 스타일 -->
-  <link href="${pageContext.request.contextPath}/css/adminstyle.css" rel="stylesheet">
-  <!-- Favicon -->
-  <link rel="icon" href="${pageContext.request.contextPath}/resources/favicon.ico" type="image/x-icon">
-</head>
+    <title>관리자 대시보드</title>
+    <%@ include file="/WEB-INF/views/admin/common/adminHead.jsp" %>
+  </head>
 <body class="bg-light">
-
-<%-- Offcanvas 토글 버튼과 사이드바 내용 포함 --%>
-<%@ include file="/WEB-INF/views/common/adminNav.jsp" %>
+<%@ include file="/WEB-INF/views/admin/common/adminNav.jsp" %>
 
 <div class="container mt-4">
   <h2 class="mb-4">👑 관리자 대시보드</h2>

@@ -3,17 +3,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>회원 수정</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css">
-  <link href="${pageContext.request.contextPath}/css/adminstyle.css" rel="stylesheet">
-  <link rel="icon" href="${pageContext.request.contextPath}/resources/favicon.ico" type="image/x-icon">
+  <title>회원수정</title>
+  <%@ include file="/WEB-INF/views/admin/common/adminHead.jsp" %>
 </head>
 <body>
 
-<%@ include file="/WEB-INF/views/common/adminNav.jsp" %>
-
+<%@ include file="/WEB-INF/views/admin/common/adminNav.jsp" %>
 <div class="container mt-5">
   <h2 class="mb-4">👤 회원 수정</h2>
   <form action="${pageContext.request.contextPath}/admin/users/edit" method="post" class="card p-4 shadow-sm">

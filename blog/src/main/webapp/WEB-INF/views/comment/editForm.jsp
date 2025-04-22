@@ -3,9 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>댓글 수정</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>댓글수정</title>
+    <%@ include file="/WEB-INF/views/common/userHead.jsp" %>
 </head>
 <body>
 <div class="container mt-5">

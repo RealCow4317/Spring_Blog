@@ -3,11 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>내 정보</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-    <link rel="icon" href="${pageContext.request.contextPath}/resources/favicon.ico" type="image/x-icon">
+    <title>내정보</title>
+    <%@ include file="/WEB-INF/views/common/userHead.jsp" %>
 </head>
 <body class="bg-light">
 
@@ -26,8 +23,10 @@
     </div>
 
     <div class="mt-3">
+        <a href="${pageContext.request.contextPath}/member/change-password" class="btn btn-outline-primary">비밀번호 변경</a>
         <a href="${pageContext.request.contextPath}/" class="btn btn-secondary">홈으로</a>
     </div>
+
 </div>
 
     <!-- Bootstrap JS -->

@@ -11,7 +11,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <a class="navbar-brand" href="#">관리자 대시보드</a>
+        <a class="navbar-brand" href="/admin">관리자 대시보드</a>
     </div>
 </nav>
 

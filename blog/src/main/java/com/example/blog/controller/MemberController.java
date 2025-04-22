@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -88,8 +89,45 @@ public class MemberController {
         return memberService.getMemberByEmail(email) == null ? "true" : "false";
     }
 
-    //비밀번호
+    // 비밀번호 변경 폼
+    @GetMapping("/change-password")
+    public String changePasswordForm(HttpSession session, Model model) {
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/member/login";
+        }
+        model.addAttribute("loginUser", loginUser);
+        return "member/changePassword";
+    }
 
+    // 비밀번호 변경 처리
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestParam String currentPassword,
+                                 @RequestParam String newPassword,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
 
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/member/login";
+        }
 
+        // 현재 비밀번호 검증
+        if (!passwordEncoder.matches(currentPassword, loginUser.getPassword())) {
+            redirectAttributes.addFlashAttribute("error", "현재 비밀번호가 올바르지 않습니다.");
+            return "redirect:/member/change-password";
+        }
+
+        // 새 비밀번호 암호화 후 저장
+        loginUser.setPassword(newPassword);
+        memberService.updateMember(loginUser);
+
+        // 로그아웃 처리
+        session.invalidate();
+
+        // 리다이렉트 시 메시지 전달
+        redirectAttributes.addFlashAttribute("message", "비밀번호가 변경되었습니다. 다시 로그인해주세요.");
+        return "redirect:/member/login";
+
+    }
 }

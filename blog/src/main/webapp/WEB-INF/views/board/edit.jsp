@@ -3,11 +3,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
     <title>게시글 수정</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+    <%@ include file="/WEB-INF/views/common/userHead.jsp" %>
 </head>
 <body>
 

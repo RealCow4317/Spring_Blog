@@ -3,14 +3,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
   <title>게시글 작성</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css">
-  <link href="${pageContext.request.contextPath}/css/adminstyle.css" rel="stylesheet">
+  <%@ include file="/WEB-INF/views/admin/common/adminHead.jsp" %>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/common/adminNav.jsp" %>
+<%@ include file="/WEB-INF/views/admin/common/adminNav.jsp" %>
 
 <div class="container mt-5">
   <h2 class="mb-4">📝 게시글 작성</h2>
