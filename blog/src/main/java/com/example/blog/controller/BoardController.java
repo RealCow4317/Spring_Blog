@@ -9,6 +9,8 @@ import com.example.blog.dto.MemberDTO;
 import com.example.blog.service.BoardService;
 import com.example.blog.service.CategoryService;
 import com.example.blog.service.CommentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/board")
 public class BoardController {
+
+    private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     @Autowired
     private BoardService boardService;
@@ -42,6 +46,8 @@ public class BoardController {
             return "redirect:/member/login";
         }
 
+        logger.debug("[LIST] page={}, keyword='{}', categoryId={}", page, keyword, categoryId);
+
         int pageSize = 10;
         List<BoardDTO> boards;
         int total;
@@ -49,19 +55,19 @@ public class BoardController {
         if (keyword != null && !keyword.isEmpty() && categoryId != null) {
             boards = boardService.searchBoardsByCategoryAndKeyword(categoryId, keyword, page, pageSize);
             total = boardService.countBoardsByCategoryAndKeyword(categoryId, keyword);
-            model.addAttribute("keyword", keyword);
-            model.addAttribute("selectedCategory", categoryId);
+            logger.debug("검색(카테고리+키워드) 결과: {}건", boards.size());
         } else if (keyword != null && !keyword.isEmpty()) {
             boards = boardService.searchBoards(keyword, page, pageSize);
             total = boardService.countSearchBoards(keyword);
-            model.addAttribute("keyword", keyword);
+            logger.debug("검색(키워드) 결과: {}건", boards.size());
         } else if (categoryId != null) {
             boards = boardService.getBoardsByCategory(categoryId, page, pageSize);
             total = boardService.countBoardsByCategory(categoryId);
-            model.addAttribute("selectedCategory", categoryId);
+            logger.debug("검색(카테고리) 결과: {}건", boards.size());
         } else {
             boards = boardService.getBoardsByPage(page, pageSize);
             total = boardService.countBoards();
+            logger.debug("전체 게시글 조회 결과: {}건", boards.size());
         }
 
         for (BoardDTO board : boards) {
@@ -79,13 +85,14 @@ public class BoardController {
         return "board/list";
     }
 
-
     @GetMapping("/view/{id}")
     public String view(@PathVariable int id, Model model, HttpSession session) {
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
         if (loginUser == null) {
             return "redirect:/member/login";
         }
+
+        logger.debug("[VIEW] 게시글 ID: {}", id);
 
         BoardDTO board = boardService.getBoardById(id);
         List<CommentDTO> comments = commentService.getCommentsByBoardId(id);
@@ -96,8 +103,6 @@ public class BoardController {
         return "board/view";
     }
 
-
-
     @GetMapping("/write")
     public String writeForm(HttpSession session, Model model) {
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
@@ -106,7 +111,7 @@ public class BoardController {
         }
 
         model.addAttribute("categoryList", categoryService.getAll());
-        model.addAttribute("writerId", loginUser.getId()); // 작성자 ID 넘기기
+        model.addAttribute("writerId", loginUser.getId());
         return "board/write";
     }
 
@@ -117,7 +122,9 @@ public class BoardController {
             return "redirect:/member/login";
         }
 
-        board.setWriter(loginUser.getId()); // 로그인한 유저 ID를 작성자로 설정
+        board.setWriter(loginUser.getId());
+        logger.debug("[WRITE] 작성자: {}, 제목: {}", loginUser.getId(), board.getTitle());
+
         boardService.insertBoard(board);
         return "redirect:/board/list";
     }
@@ -128,7 +135,7 @@ public class BoardController {
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 
         if (loginUser == null || !loginUser.getId().equals(board.getWriter())) {
-            return "redirect:/board/view/" + id; // 권한 없으면 돌아감
+            return "redirect:/board/view/" + id;
         }
 
         model.addAttribute("board", board);
@@ -145,10 +152,11 @@ public class BoardController {
             return "redirect:/board/view/" + board.getId();
         }
 
+        logger.debug("[EDIT] 수정자: {}, 게시글 ID: {}", loginUser.getId(), board.getId());
+
         boardService.updateBoard(board);
         return "redirect:/board/view/" + board.getId();
     }
-
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable int id, HttpSession session) {
@@ -158,6 +166,8 @@ public class BoardController {
         if (loginUser == null || !loginUser.getId().equals(board.getWriter())) {
             return "redirect:/board/view/" + id;
         }
+
+        logger.debug("[DELETE] 삭제자: {}, 게시글 ID: {}", loginUser.getId(), id);
 
         boardService.deleteBoard(id);
         return "redirect:/board/list";
