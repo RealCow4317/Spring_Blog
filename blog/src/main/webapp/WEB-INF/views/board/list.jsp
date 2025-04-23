@@ -43,7 +43,7 @@
     <table class="table table-hover table-bordered bg-white">
         <thead class="table-dark">
         <tr>
-            <th scope="col" style="width: 30px"></th>
+            <th scope="col" style="width: 30px">✖️</th>
             <th scope="col">카테고리</th>
             <th scope="col">제목</th>
             <th scope="col">작성자</th>
@@ -117,6 +117,5 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </body>
 </html>

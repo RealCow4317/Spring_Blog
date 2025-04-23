@@ -29,7 +29,9 @@
         <div class="mt-4">
             <c:if test="${not empty loginUser and loginUser.id eq board.writer}">
                 <a href="${pageContext.request.contextPath}/board/edit/${board.id}" class="btn btn-warning btn-sm">수정</a>
-                <a href="${pageContext.request.contextPath}/board/delete/${board.id}" class="btn btn-danger btn-sm">삭제</a>
+                <a href="${pageContext.request.contextPath}/board/delete/${board.id}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a>
             </c:if>
             <a href="${pageContext.request.contextPath}/board/list" class="btn btn-secondary btn-sm">목록</a>
         </div>
