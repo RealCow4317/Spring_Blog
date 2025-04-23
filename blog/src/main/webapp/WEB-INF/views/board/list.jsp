@@ -43,7 +43,7 @@
     <table class="table table-hover table-bordered bg-white">
         <thead class="table-dark">
         <tr>
-            <th scope="col">번호</th>
+            <th scope="col" style="width: 30px"></th>
             <th scope="col">카테고리</th>
             <th scope="col">제목</th>
             <th scope="col">작성자</th>
@@ -55,7 +55,7 @@
         <c:forEach var="board" items="${boards}">
             <c:if test="${board.pinned}">
                 <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'" class="table-warning">
-                    <td>📌</td>
+                    <td class="text-center">📌</td>
                     <td>${board.categoryName}</td>
                     <td class="text-primary fw-bold">
                             ${board.title}
@@ -72,7 +72,7 @@
         <c:forEach var="board" items="${boards}">
             <c:if test="${!board.pinned}">
                 <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'">
-                    <td>${board.id}</td>
+                    <td class="text-center"></td> <!-- 번호 비워두기 -->
                     <td>${board.categoryName}</td>
                     <td class="text-primary">
                             ${board.title}
@@ -87,6 +87,7 @@
         </c:forEach>
 
         </tbody>
+
     </table>
 
     <nav>
