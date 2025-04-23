@@ -12,6 +12,7 @@ public class BoardDTO {
     private String categoryName;
     private boolean pinned;
     private int commentCount;
+    private String thumbnail;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -50,6 +51,16 @@ public class BoardDTO {
         this.commentCount = commentCount;
     }
 
+    public String getThumbnail() {
+        return thumbnail;
+    }
 
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 
+    public String getContentWithoutImages() {
+        if (this.content == null) return "";
+        return this.content.replaceAll("<img[^>]*>", "");
+    }
 }

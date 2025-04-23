@@ -5,7 +5,6 @@
 
 <mapper namespace="com.example.blog.dao.CommentDAO">
 
-    <!-- resultMap 정의 -->
     <resultMap id="commentResultMap" type="com.example.blog.dto.CommentDTO">
         <id property="id" column="id"/>
         <result property="boardId" column="board_id"/>

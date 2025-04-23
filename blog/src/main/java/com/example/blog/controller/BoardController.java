@@ -1,7 +1,5 @@
 package com.example.blog.controller;
 
-import java.util.List;
-
 import com.example.blog.dto.BoardDTO;
 import com.example.blog.dto.CategoryDTO;
 import com.example.blog.dto.CommentDTO;
@@ -9,6 +7,9 @@ import com.example.blog.dto.MemberDTO;
 import com.example.blog.service.BoardService;
 import com.example.blog.service.CategoryService;
 import com.example.blog.service.CommentService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org. jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/board")
@@ -32,7 +34,6 @@ public class BoardController {
 
     @Autowired
     private CommentService commentService;
-
 
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "1") int page,
@@ -55,19 +56,15 @@ public class BoardController {
         if (keyword != null && !keyword.isEmpty() && categoryId != null) {
             boards = boardService.searchBoardsByCategoryAndKeyword(categoryId, keyword, page, pageSize);
             total = boardService.countBoardsByCategoryAndKeyword(categoryId, keyword);
-            logger.debug("검색(카테고리+키워드) 결과: {}건", boards.size());
         } else if (keyword != null && !keyword.isEmpty()) {
             boards = boardService.searchBoards(keyword, page, pageSize);
             total = boardService.countSearchBoards(keyword);
-            logger.debug("검색(키워드) 결과: {}건", boards.size());
         } else if (categoryId != null) {
             boards = boardService.getBoardsByCategory(categoryId, page, pageSize);
             total = boardService.countBoardsByCategory(categoryId);
-            logger.debug("검색(카테고리) 결과: {}건", boards.size());
         } else {
             boards = boardService.getBoardsByPage(page, pageSize);
             total = boardService.countBoards();
-            logger.debug("전체 게시글 조회 결과: {}건", boards.size());
         }
 
         for (BoardDTO board : boards) {
@@ -91,8 +88,6 @@ public class BoardController {
         if (loginUser == null) {
             return "redirect:/member/login";
         }
-
-        logger.debug("[VIEW] 게시글 ID: {}", id);
 
         BoardDTO board = boardService.getBoardById(id);
         List<CommentDTO> comments = commentService.getCommentsByBoardId(id);
@@ -123,7 +118,8 @@ public class BoardController {
         }
 
         board.setWriter(loginUser.getId());
-        logger.debug("[WRITE] 작성자: {}, 제목: {}", loginUser.getId(), board.getTitle());
+        String thumbnail = extractFirstImageUrl(board.getContent());
+        board.setThumbnail(thumbnail);
 
         boardService.insertBoard(board);
         return "redirect:/board/list";
@@ -151,8 +147,8 @@ public class BoardController {
         if (loginUser == null || !loginUser.getId().equals(original.getWriter())) {
             return "redirect:/board/view/" + board.getId();
         }
-
-        logger.debug("[EDIT] 수정자: {}, 게시글 ID: {}", loginUser.getId(), board.getId());
+        String thumbnail = extractFirstImageUrl(board.getContent());
+        board.setThumbnail(thumbnail);
 
         boardService.updateBoard(board);
         return "redirect:/board/view/" + board.getId();
@@ -167,9 +163,19 @@ public class BoardController {
             return "redirect:/board/view/" + id;
         }
 
-        logger.debug("[DELETE] 삭제자: {}, 게시글 ID: {}", loginUser.getId(), id);
-
         boardService.deleteBoard(id);
         return "redirect:/board/list";
+    }
+    private String extractFirstImageUrl(String content) {
+        try {
+            Document doc = Jsoup.parse(content);
+            Element img = doc.selectFirst("img");
+            if (img != null) {
+                return img.attr("src");
+            }
+        } catch (Exception e) {
+            logger.warn("대표 이미지 추출 실패: {}", e.getMessage());
+        }
+        return null;
     }
 }

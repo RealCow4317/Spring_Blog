@@ -5,7 +5,6 @@
 
 <mapper namespace="com.example.blog.dao.BoardDAO">
 
-    <!-- resultMap 정의 -->
     <resultMap id="boardResultMap" type="com.example.blog.dto.BoardDTO">
         <id property="id" column="id"/>
         <result property="title" column="title"/>
@@ -15,11 +14,12 @@
         <result property="categoryId" column="category_id"/>
         <result property="categoryName" column="categoryName"/>
         <result property="pinned" column="pinned"/>
+        <result property="thumbnail" column="thumbnail"/>
     </resultMap>
 
     <select id="getAllBoards" resultMap="boardResultMap">
         SELECT b.id, b.title, b.content, b.writer, b.created_at,
-               b.category_id, c.name AS categoryName, b.pinned
+               b.category_id, c.name AS categoryName, b.pinned, b.thumbnail
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         ORDER BY b.id DESC
@@ -27,20 +27,24 @@
 
     <select id="getBoardById" parameterType="int" resultMap="boardResultMap">
         SELECT b.id, b.title, b.content, b.writer, b.created_at,
-               b.category_id, c.name AS categoryName, b.pinned
+               b.category_id, c.name AS categoryName, b.pinned, b.thumbnail
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         WHERE b.id = #{id}
     </select>
 
     <insert id="insertBoard" parameterType="com.example.blog.dto.BoardDTO">
-        INSERT INTO board (title, content, writer, category_id, pinned)
-        VALUES (#{title}, #{content}, #{writer}, #{categoryId}, #{pinned})
+        INSERT INTO board (title, content, writer, category_id, pinned, thumbnail)
+        VALUES (#{title}, #{content}, #{writer}, #{categoryId}, #{pinned}, #{thumbnail})
     </insert>
 
     <update id="updateBoard" parameterType="com.example.blog.dto.BoardDTO">
         UPDATE board
-        SET title = #{title}, content = #{content}, category_id = #{categoryId}, pinned = #{pinned}
+        SET title = #{title},
+            content = #{content},
+            category_id = #{categoryId},
+            pinned = #{pinned},
+            thumbnail = #{thumbnail}
         WHERE id = #{id}
     </update>
 
@@ -50,7 +54,7 @@
 
     <select id="getRecentBoards" resultMap="boardResultMap">
         SELECT b.id, b.title, b.content, b.writer, b.created_at,
-               b.category_id, c.name AS categoryName, b.pinned
+               b.category_id, c.name AS categoryName, b.pinned, b.thumbnail
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         ORDER BY b.created_at DESC
@@ -63,7 +67,7 @@
 
     <select id="getBoardsByPage" resultMap="boardResultMap">
         SELECT b.id, b.title, b.content, b.writer, b.created_at,
-               b.category_id, c.name AS categoryName, b.pinned
+               b.category_id, c.name AS categoryName, b.pinned, b.thumbnail
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         ORDER BY b.pinned DESC, b.id DESC
@@ -72,7 +76,7 @@
 
     <select id="searchBoards" resultMap="boardResultMap">
         SELECT b.id, b.title, b.content, b.writer, b.created_at,
-               b.category_id, c.name AS categoryName, b.pinned
+               b.category_id, c.name AS categoryName, b.pinned, b.thumbnail
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         WHERE b.title LIKE CONCAT('%', #{keyword}, '%')
@@ -81,7 +85,6 @@
         ORDER BY b.pinned DESC, b.id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
-
 
     <select id="countSearchBoards" resultType="int">
         SELECT COUNT(*)
@@ -93,7 +96,7 @@
 
     <select id="searchBoardsByCategoryAndKeyword" resultMap="boardResultMap">
         SELECT b.id, b.title, b.content, b.writer, b.created_at,
-               b.category_id, c.name AS categoryName, b.pinned
+               b.category_id, c.name AS categoryName, b.pinned, b.thumbnail
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         WHERE b.category_id = #{categoryId}
@@ -103,7 +106,6 @@
         ORDER BY b.pinned DESC, b.id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
-
 
     <select id="countBoardsByCategoryAndKeyword" resultType="int">
         SELECT COUNT(*)
@@ -116,14 +118,13 @@
 
     <select id="getBoardsByCategory" resultMap="boardResultMap">
         SELECT b.id, b.title, b.content, b.writer, b.created_at,
-               b.category_id, c.name AS categoryName, b.pinned
+               b.category_id, c.name AS categoryName, b.pinned, b.thumbnail
         FROM board b
                  LEFT JOIN category c ON b.category_id = c.id
         WHERE b.category_id = #{categoryId}
         ORDER BY b.pinned DESC, b.id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
-
 
     <select id="countBoardsByCategory" resultType="int">
         SELECT COUNT(*) FROM board WHERE category_id = #{categoryId}
