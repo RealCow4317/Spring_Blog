@@ -9,7 +9,7 @@ import com.example.blog.service.CategoryService;
 import com.example.blog.service.CommentService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org. jsoup.nodes.Element;
+import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +26,9 @@ public class BoardController {
 
     private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
-    @Autowired
-    private BoardService boardService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
-    private CommentService commentService;
+    @Autowired private BoardService boardService;
+    @Autowired private CategoryService categoryService;
+    @Autowired private CommentService commentService;
 
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "1") int page,
@@ -46,8 +41,6 @@ public class BoardController {
         if (loginUser == null) {
             return "redirect:/member/login";
         }
-
-        logger.debug("[LIST] page={}, keyword='{}', categoryId={}", page, keyword, categoryId);
 
         int pageSize = 10;
         List<BoardDTO> boards;
@@ -89,8 +82,12 @@ public class BoardController {
             return "redirect:/member/login";
         }
 
-        boardService.incrementViews(id);
         BoardDTO board = boardService.getBoardById(id);
+        if (board == null) {
+            return "error/404"; // 없는 게시글이면 404 페이지로 이동
+        }
+
+        boardService.incrementViews(id);
         List<CommentDTO> comments = commentService.getCommentsByBoardId(id);
 
         model.addAttribute("board", board);
@@ -131,7 +128,7 @@ public class BoardController {
         BoardDTO board = boardService.getBoardById(id);
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 
-        if (loginUser == null || !loginUser.getId().equals(board.getWriter())) {
+        if (board == null || loginUser == null || !loginUser.getId().equals(board.getWriter())) {
             return "redirect:/board/view/" + id;
         }
 
@@ -145,9 +142,10 @@ public class BoardController {
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
         BoardDTO original = boardService.getBoardById(board.getId());
 
-        if (loginUser == null || !loginUser.getId().equals(original.getWriter())) {
+        if (original == null || loginUser == null || !loginUser.getId().equals(original.getWriter())) {
             return "redirect:/board/view/" + board.getId();
         }
+
         String thumbnail = extractFirstImageUrl(board.getContent());
         board.setThumbnail(thumbnail);
 
@@ -160,13 +158,14 @@ public class BoardController {
         BoardDTO board = boardService.getBoardById(id);
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 
-        if (loginUser == null || !loginUser.getId().equals(board.getWriter())) {
+        if (board == null || loginUser == null || !loginUser.getId().equals(board.getWriter())) {
             return "redirect:/board/view/" + id;
         }
 
         boardService.deleteBoard(id);
         return "redirect:/board/list";
     }
+
     private String extractFirstImageUrl(String content) {
         try {
             Document doc = Jsoup.parse(content);
