@@ -48,6 +48,7 @@
             <th scope="col">제목</th>
             <th scope="col">작성자</th>
             <th scope="col">작성일</th>
+            <th class="center" scope="col" style="width: 60px">조회수</th>
         </tr>
         </thead>
         <tbody>
@@ -65,6 +66,7 @@
                     </td>
                     <td>${board.writer}</td>
                     <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                    <td class="text-center">${board.views}</td>
                 </tr>
             </c:if>
         </c:forEach>
@@ -82,6 +84,7 @@
                     </td>
                     <td>${board.writer}</td>
                     <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                    <td class="text-center">${board.views}</td>
                 </tr>
             </c:if>
         </c:forEach>

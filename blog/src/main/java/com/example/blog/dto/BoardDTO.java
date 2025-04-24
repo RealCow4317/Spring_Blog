@@ -13,6 +13,8 @@ public class BoardDTO {
     private boolean pinned;
     private int commentCount;
     private String thumbnail;
+    private int views;
+
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -63,4 +65,12 @@ public class BoardDTO {
         if (this.content == null) return "";
         return this.content.replaceAll("<img[^>]*>", "");
     }
+
+    public int getViews() {
+        return views;
+    }
+    public void setViews(int views) {
+        this.views = views;
+    }
+
 }

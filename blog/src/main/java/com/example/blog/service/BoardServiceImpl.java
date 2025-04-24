@@ -111,4 +111,9 @@ public class BoardServiceImpl implements BoardService {
         int offset = (page - 1) * pageSize;
         return boardDAO.searchBoardsByCategoryAndKeyword(categoryId, keyword, pageSize, offset);
     }
+
+    @Override
+    public void incrementViews(int id) {
+        boardDAO.incrementViews(id);
+    }
 }

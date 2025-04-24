@@ -42,6 +42,7 @@
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
+            <th>조회수</th>
         </tr>
         </thead>
         <tbody>
@@ -56,9 +57,11 @@
                 </td>
                 <td>${post.writer}</td>
                 <td><fmt:formatDate value="${post.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                <td class="text-center">${post.views}</td> <!-- ✅ 수정된 부분 -->
             </tr>
         </c:forEach>
         </tbody>
+
     </table>
 
     <!-- 페이징 -->

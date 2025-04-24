@@ -52,4 +52,6 @@ public interface BoardDAO {
             @Param("limit") int limit,
             @Param("offset") int offset
     );
+
+    void incrementViews(int id);
 }

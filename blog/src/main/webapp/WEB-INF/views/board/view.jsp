@@ -21,6 +21,7 @@
         <p><strong>카테고리:</strong> ${board.categoryName}</p>
         <p><strong>작성자:</strong> ${board.writer}</p>
         <p><strong>작성일:</strong> <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm" /></p>
+        <p><strong>조회수:</strong> ${board.views}</p>
         <hr>
 
         <!-- Summernote 내용 HTML 렌더링 -->

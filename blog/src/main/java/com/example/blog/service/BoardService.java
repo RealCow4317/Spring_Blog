@@ -24,5 +24,5 @@ public interface BoardService {
     int countBoardsByCategory(int categoryId);
     List<BoardDTO> getBoardsByCategory(int categoryId, int page, int pageSize);
 
-
+    void incrementViews(int id);
 }

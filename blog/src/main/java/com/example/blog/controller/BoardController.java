@@ -89,6 +89,7 @@ public class BoardController {
             return "redirect:/member/login";
         }
 
+        boardService.incrementViews(id);
         BoardDTO board = boardService.getBoardById(id);
         List<CommentDTO> comments = commentService.getCommentsByBoardId(id);
 
