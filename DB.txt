@@ -1,6 +1,7 @@
 [DB : blog_db]
-[mkdir C:\upload]
 
+[cmd]
+mkdir C:\upload
 
 CREATE TABLE `board` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -12,13 +13,14 @@ CREATE TABLE `board` (
 	`pinned` TINYINT(1) NULL DEFAULT '0',
 	`image` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
 	`thumbnail` VARCHAR(500) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+	`views` INT(11) NULL DEFAULT '0',
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `fk_board_category` (`category_id`) USING BTREE,
 	CONSTRAINT `fk_board_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON UPDATE RESTRICT ON DELETE SET NULL
 )
 COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
-AUTO_INCREMENT=608
+AUTO_INCREMENT=611
 ;
 
 CREATE TABLE `category` (
@@ -72,3 +74,5 @@ COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB
 AUTO_INCREMENT=22
 ;
+
+
