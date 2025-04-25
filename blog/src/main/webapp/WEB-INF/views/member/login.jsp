@@ -7,7 +7,7 @@
     <title>로그인</title>
     <%@ include file="/WEB-INF/views/common/userHead.jsp" %>
 </head>
-<body class="bg-light">
+<body>
 
 <%@ include file="/WEB-INF/views/common/nav.jsp" %>
 <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
@@ -47,8 +47,6 @@
         <a href="${pageContext.request.contextPath}/member/join">회원가입 하러가기</a>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

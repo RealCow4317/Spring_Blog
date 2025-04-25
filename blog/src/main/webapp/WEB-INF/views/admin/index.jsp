@@ -6,7 +6,7 @@
     <title>관리자 대시보드</title>
     <%@ include file="/WEB-INF/views/admin/common/adminHead.jsp" %>
   </head>
-<body class="bg-light">
+<body>
 <%@ include file="/WEB-INF/views/admin/common/adminNav.jsp" %>
 
 <div class="container mt-4">
@@ -96,8 +96,5 @@
   </div>
 
 </div>
-
-<!-- Bootstrap JS (Offcanvas 포함) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

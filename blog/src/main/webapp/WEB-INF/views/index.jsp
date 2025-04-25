@@ -70,28 +70,6 @@
         </div>
     </div>
 
-<script>
-    function timeAgo(dateStr) {
-        const now = new Date();
-        const target = new Date(dateStr);
-        const diff = (now - target) / 1000;
 
-        if (diff < 60) return "방금 전";
-        if (diff < 3600) return Math.floor(diff / 60) + "분 전";
-        if (diff < 86400) return Math.floor(diff / 3600) + "시간 전";
-        if (diff < 2592000) return Math.floor(diff / 86400) + "일 전";
-        return Math.floor(diff / 2592000) + "개월 전";
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".created-at").forEach(el => {
-            const timeStr = el.dataset.time;
-            if (timeStr) {
-                el.textContent = timeAgo(timeStr);
-            }
-        });
-    });
-</script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

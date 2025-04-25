@@ -6,7 +6,7 @@
     <title>비밀번호 변경</title>
     <%@ include file="/WEB-INF/views/common/userHead.jsp" %>
 </head>
-<body class="bg-light">
+<body>
 <%@ include file="/WEB-INF/views/common/nav.jsp" %>
 <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 
@@ -31,6 +31,5 @@
     </form>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

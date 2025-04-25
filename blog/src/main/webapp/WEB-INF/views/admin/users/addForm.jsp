@@ -35,6 +35,5 @@
     <button type="submit" class="btn btn-primary w-100">등록</button>
   </form>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

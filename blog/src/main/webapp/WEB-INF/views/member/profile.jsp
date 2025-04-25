@@ -6,7 +6,7 @@
     <title>내정보</title>
     <%@ include file="/WEB-INF/views/common/userHead.jsp" %>
 </head>
-<body class="bg-light">
+<body>
 
 
 <%@ include file="/WEB-INF/views/common/nav.jsp" %>
@@ -28,6 +28,5 @@
     </div>
 
 </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
