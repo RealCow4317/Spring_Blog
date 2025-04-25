@@ -12,9 +12,10 @@
 <%@ include file="/WEB-INF/views/common/nav.jsp" %>
 <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 
-<c:if test="${not empty joinSuccess}">
-    <script>alert("${joinSuccess}");</script>
-    <c:remove var="joinSuccess" scope="session" />
+<c:if test="${not empty welcomeMessage}">
+    <div class="alert alert-success text-center">
+            ${welcomeMessage}
+    </div>
 </c:if>
 
 <div class="container mt-5">

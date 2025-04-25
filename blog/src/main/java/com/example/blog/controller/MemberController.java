@@ -28,9 +28,9 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(MemberDTO member, HttpSession session) {
-        memberService.register(member); // 암호화는 여기서 처리됨
-        session.setAttribute("joinSuccess", "회원가입이 완료되었습니다");
+    public String join(MemberDTO member, RedirectAttributes redirectAttributes) {
+        memberService.register(member); // 암호화 포함
+        redirectAttributes.addFlashAttribute("welcomeMessage", member.getId() + "님, 환영합니다!");
         return "redirect:/member/login";
     }
 
