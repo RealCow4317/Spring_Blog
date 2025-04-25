@@ -10,12 +10,3 @@ function timeAgo(dateStr) {
     if (diff < 31536000) return Math.floor(diff / 2592000) + "개월 전";
     return Math.floor(diff / 31536000) + "년 전";
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll(".created-at").forEach(el => {
-        const timeStr = el.dataset.time;
-        if (timeStr) {
-            el.textContent = timeAgo(timeStr);
-        }
-    });
-});
