@@ -23,7 +23,7 @@ public class AppConfig {
         ds.setDriverClassName("org.mariadb.jdbc.Driver");
         ds.setUrl("jdbc:mariadb://localhost:3307/blog_db");
         ds.setUsername("root");
-        ds.setPassword("1004");
+        ds.setPassword("0212");
         return ds;
     }
 
