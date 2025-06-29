@@ -19,6 +19,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void register(MemberDTO member) {
+        if (memberDAO.getMemberById(member.getId()) != null) {
+            throw new RuntimeException("이미 존재하는 아이디입니다.");
+        }
+        if (memberDAO.getMemberByEmail(member.getEmail()) != null) {
+            throw new RuntimeException("이미 사용 중인 이메일입니다.");
+        }
+
         if (member.getPassword() != null && !member.getPassword().isEmpty()) {
             member.setPassword(passwordEncoder.encode(member.getPassword()));
         }
@@ -71,5 +78,4 @@ public class MemberServiceImpl implements MemberService {
     public MemberDTO getMemberByEmail(String email) {
         return memberDAO.getMemberByEmail(email);
     }
-
 }

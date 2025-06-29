@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/member")
@@ -23,15 +25,27 @@ public class MemberController {
 
     // 회원가입 폼
     @GetMapping("/join")
-    public String joinForm() {
+    public String joinForm(Model model) {
+        model.addAttribute("member", new MemberDTO());
         return "member/join";
     }
 
     @PostMapping("/join")
-    public String join(MemberDTO member, RedirectAttributes redirectAttributes) {
-        memberService.register(member); // 암호화 포함
-        redirectAttributes.addFlashAttribute("welcomeMessage", member.getId() + "님, 환영합니다!");
-        return "redirect:/member/login";
+    public String join(@Valid @ModelAttribute("member") MemberDTO member,
+                       BindingResult result,
+                       RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "member/join";
+        }
+
+        try {
+            memberService.register(member);
+            redirectAttributes.addFlashAttribute("welcomeMessage", member.getId() + "님, 환영합니다!");
+            return "redirect:/member/login";
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/member/join";
+        }
     }
 
     // 로그인 폼

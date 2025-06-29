@@ -19,19 +19,10 @@
         VALUES (#{id}, #{password}, #{name}, #{email}, #{admin})
     </insert>
 
-    <select id="loginMember" parameterType="com.example.blog.dto.MemberDTO" resultMap="memberResultMap">
-        SELECT * FROM member
-        WHERE id = #{id} AND password = #{password}
-    </select>
 
     <select id="getMemberById" parameterType="string" resultMap="memberResultMap">
         SELECT * FROM member
         WHERE LOWER(TRIM(id)) = LOWER(TRIM(#{id}))
-    </select>
-
-    <select id="getMemberByIdAndPassword" resultMap="memberResultMap">
-        SELECT * FROM member
-        WHERE id = #{id} AND password = #{password}
     </select>
 
     <select id="getAllMembers" resultMap="memberResultMap">
