@@ -63,6 +63,9 @@ public class MemberController {
             session.setAttribute("loginUser", dbMember);
             session.setAttribute("isAdmin", dbMember.isAdmin());
             String redirect = (String) session.getAttribute("redirectAfterLogin");
+
+            session.removeAttribute("redirectAfterLogin");
+
             return "redirect:" + (redirect != null ? redirect : "/");
         } else {
             model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");

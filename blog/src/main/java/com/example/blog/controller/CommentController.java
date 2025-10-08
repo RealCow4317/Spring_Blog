@@ -19,14 +19,35 @@ public class CommentController {
 
     @PostMapping("/add")
     public String addComment(CommentDTO comment, HttpSession session) {
-        comment.setWriter(((com.example.blog.dto.MemberDTO) session.getAttribute("loginUser")).getId());
-        commentService.addComment(comment);
-        return "redirect:/board/view/" + comment.getBoardId();
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+        if (loginUser == null){
+            return "redirect:/login";
     }
+        comment.setWriter(loginUser.getId());
+        commentService.addComment(comment);
+        return"redirect:/board/view/"+comment.getBoardId();
+}
 
     @GetMapping("/delete/{id}/{postId}")
-    public String deleteComment(@PathVariable int id, @PathVariable int postId) {
-        commentService.deleteComment(id);
+    public String deleteComment(@PathVariable int id, @PathVariable int postId, HttpSession session) {
+
+        MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+
+        if(loginUser == null){
+            return "redirect:/";
+        }
+
+        CommentDTO comment = commentService.getCommentById(id);
+
+        if(comment != null){
+            boolean isWriter = comment.getWriter().equals(loginUser.getId());
+            boolean isAdmin = loginUser.isAdmin();
+
+            if(isWriter && isAdmin){
+                commentService.deleteComment(id);
+            }
+        }
+
         return "redirect:/board/view/" + postId;
     }
 
@@ -47,7 +68,10 @@ public class CommentController {
     public String edit(CommentDTO comment, HttpSession session) {
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 
-        if (loginUser != null && loginUser.getId().equals(comment.getWriter())) {
+        CommentDTO dbComment = commentService.getCommentById(comment.getId());
+
+        if (loginUser != null && dbComment != null && dbComment.getWriter().equals(loginUser.getId())) {
+            comment.setWriter(loginUser.getId());
             commentService.updateComment(comment);
         }
 

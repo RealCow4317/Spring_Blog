@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 public class MemberDTO implements Serializable {
 
+    private int memberNo;
+
     @NotBlank(message = "아이디는 필수 항목입니다.")
     private String id;
 
@@ -21,7 +23,12 @@ public class MemberDTO implements Serializable {
 
     private boolean admin;
 
-    // getter, setter
+    public int getMemberNo() {
+        return memberNo;
+    }
+    public void setMemberNo(int memberNo) {
+        this.memberNo = memberNo;
+    }
 
     public String getId() {
         return id;
