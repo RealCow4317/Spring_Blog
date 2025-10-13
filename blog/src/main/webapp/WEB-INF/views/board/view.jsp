@@ -43,21 +43,9 @@
         <h5>💬 댓글</h5>
         <c:choose>
             <c:when test="${not empty comments}">
-                <c:forEach var="comment" items="${comments}">
-                    <div class="border-bottom py-2">
-                        <p class="mb-1">
-                            <strong>${comment.writer}</strong>
-                            <span class="text-muted"> • <fmt:formatDate value="${comment.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
-                        </p>
-                        <p class="mb-1">${comment.content}</p>
-                        <c:if test="${not empty loginUser and loginUser.id eq comment.writer}">
-                            <form action="${pageContext.request.contextPath}/comment/delete/${comment.id}/${board.id}" method="get" style="display:inline;">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">삭제</button>
-                            </form>
-                            <a href="${pageContext.request.contextPath}/comment/edit/${comment.id}" class="btn btn-sm btn-outline-primary">수정</a>
-                        </c:if>
-                    </div>
-                </c:forEach>
+                <c:set var="commentList" value="${comments}" scope="request" />
+                <c:set var="depth" value="0" scope="request" />
+                <jsp:include page="comment_tree.jsp" />
             </c:when>
             <c:otherwise>
                 <div class="text-muted">아직 댓글이 없습니다.</div>
@@ -83,6 +71,21 @@
         </div>
     </c:if>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const replyButtons = document.querySelectorAll('.reply-btn');
+    replyButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const commentId = this.getAttribute('data-comment-id');
+            const replyForm = document.getElementById('reply-form-' + commentId);
+            if (replyForm) {
+                replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+    });
+});
+</script>
 
 </body>
 </html>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -25,7 +26,26 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDTO> getCommentsByBoardId(int boardId) {
-        return commentDAO.getCommentsByBoardId(boardId);
+        List<CommentDTO> allComments = commentDAO.getCommentsByBoardId(boardId);
+        Map<Integer, CommentDTO> commentMap = new java.util.HashMap<>();
+        List<CommentDTO> rootComments = new java.util.ArrayList<>();
+
+        for (CommentDTO comment : allComments) {
+            comment.setReplies(new java.util.ArrayList<>());
+            commentMap.put(comment.getId(), comment);
+        }
+
+        for (CommentDTO comment : allComments) {
+            if (comment.getParentId() != null && comment.getParentId() != 0) {
+                CommentDTO parent = commentMap.get(comment.getParentId());
+                if (parent != null) {
+                    parent.getReplies().add(comment);
+                }
+            } else {
+                rootComments.add(comment);
+            }
+        }
+        return rootComments;
     }
     @Override
     public CommentDTO getCommentById(int id) {

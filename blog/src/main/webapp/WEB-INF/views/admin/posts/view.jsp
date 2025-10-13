@@ -30,7 +30,7 @@
     <c:choose>
       <c:when test="${not empty comments}">
         <c:forEach var="comment" items="${comments}">
-          <div class="border-bottom py-2">
+          <div>
             <p class="mb-1">
               <strong>${comment.writer}</strong>
               <span class="text-muted"> • <fmt:formatDate value="${comment.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>

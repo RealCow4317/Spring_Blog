@@ -9,14 +9,23 @@
         <id property="id" column="id"/>
         <result property="boardId" column="board_id"/>
         <result property="writer" column="writer"/>
+        <result property="parentId" column="parent_id"/>
         <result property="content" column="content"/>
         <result property="createdAt" column="created_at"/>
     </resultMap>
 
     <!-- 댓글 추가 -->
     <insert id="addComment" parameterType="com.example.blog.dto.CommentDTO">
-        INSERT INTO comment (board_id, writer, content)
-        VALUES (#{boardId}, #{writer}, #{content})
+        INSERT INTO comment (board_id, writer, content
+        <if test="parentId != null and parentId > 0">
+            , parent_id
+        </if>
+        )
+        VALUES (#{boardId}, #{writer}, #{content}
+        <if test="parentId != null and parentId > 0">
+            , #{parentId}
+        </if>
+        )
     </insert>
 
     <!-- 댓글 삭제 -->
@@ -26,7 +35,7 @@
 
     <!-- 특정 게시글의 모든 댓글 조회 -->
     <select id="getCommentsByBoardId" parameterType="int" resultMap="commentResultMap">
-        SELECT id, board_id, writer, content, created_at
+        SELECT id, board_id, writer, parent_id, content, created_at
         FROM comment
         WHERE board_id = #{boardId}
         ORDER BY id ASC
@@ -34,7 +43,7 @@
 
     <!-- 댓글 1개 조회 -->
     <select id="getCommentById" parameterType="int" resultMap="commentResultMap">
-        SELECT id, board_id, writer, content, created_at
+        SELECT id, board_id, writer, parent_id, content, created_at
         FROM comment
         WHERE id = #{id}
     </select>

@@ -18,12 +18,16 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/add")
-    public String addComment(CommentDTO comment, HttpSession session) {
+    public String addComment(
+            CommentDTO comment,
+            @RequestParam(value = "parentId", defaultValue = "0", required = false) int parentId,
+            HttpSession session) {
         MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
         if (loginUser == null){
             return "redirect:/login";
     }
         comment.setWriter(loginUser.getId());
+        comment.setParentId(parentId);
         commentService.addComment(comment);
         return"redirect:/board/view/"+comment.getBoardId();
 }
@@ -43,7 +47,7 @@ public class CommentController {
             boolean isWriter = comment.getWriter().equals(loginUser.getId());
             boolean isAdmin = loginUser.isAdmin();
 
-            if(isWriter && isAdmin){
+            if(isWriter || isAdmin){
                 commentService.deleteComment(id);
             }
         }
