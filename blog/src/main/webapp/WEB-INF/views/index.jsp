@@ -18,6 +18,14 @@
 <%@ include file="/WEB-INF/views/common/nav.jsp" %>
 <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <h1>RealCowLabs</h1>
+        <p>새로운 영감을 발견하는 곳</p>
+        <a href="${pageContext.request.contextPath}/board/list" class="btn btn-light">게시물 둘러보기</a>
+    </div>
+</div>
 <!-- 본문 영역 -->
 <div class="container mt-4">
     <h2 class="mb-4">최근 게시글</h2>
@@ -70,6 +78,7 @@
         </div>
     </div>
 
+    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 
 </body>
 </html>

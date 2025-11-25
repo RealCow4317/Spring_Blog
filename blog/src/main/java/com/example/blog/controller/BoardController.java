@@ -1,7 +1,6 @@
 package com.example.blog.controller;
 
 import com.example.blog.dto.BoardDTO;
-import com.example.blog.dto.CategoryDTO;
 import com.example.blog.dto.CommentDTO;
 import com.example.blog.dto.MemberDTO;
 import com.example.blog.service.BoardService;
@@ -84,7 +83,9 @@ public class BoardController {
 
         BoardDTO board = boardService.getBoardById(id);
         if (board == null) {
-            return "error/404"; // 없는 게시글이면 404 페이지로 이동
+            // I will leave this as is, but it was pointing to a 404 page that will be gone.
+            // The user wants the code reverted, so I will revert to a simple redirect.
+            return "redirect:/board/list";
         }
 
         boardService.incrementViews(id);

@@ -40,58 +40,60 @@
         </div>
     </form>
 
-    <table class="table table-hover table-bordered bg-white">
-        <thead class="table-dark">
-        <tr>
-            <th scope="col" style="width: 30px">✖️</th>
-            <th scope="col">카테고리</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">작성일</th>
-            <th class="center" scope="col" style="width: 60px">조회수</th>
-        </tr>
-        </thead>
-        <tbody>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered bg-white">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col" style="width: 30px">✖️</th>
+                <th scope="col">카테고리</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">작성일</th>
+                <th class="center" scope="col" style="width: 60px">조회수</th>
+            </tr>
+            </thead>
+            <tbody>
 
-        <c:forEach var="board" items="${boards}">
-            <c:if test="${board.pinned}">
-                <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'" class="table-warning">
-                    <td class="text-center">📌</td>
-                    <td>${board.categoryName}</td>
-                    <td class="text-primary fw-bold">
-                            ${board.title}
-                        <c:if test="${board.commentCount > 0}">
-                            <span class="text-muted">(${board.commentCount})</span>
-                        </c:if>
-                    </td>
-                    <td>${board.writer}</td>
-                    <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
-                    <td class="text-center">${board.views}</td>
-                </tr>
-            </c:if>
-        </c:forEach>
+            <c:forEach var="board" items="${boards}">
+                <c:if test="${board.pinned}">
+                    <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'" class="table-warning">
+                        <td class="text-center">📌</td>
+                        <td>${board.categoryName}</td>
+                        <td class="text-primary fw-bold">
+                                ${board.title}
+                            <c:if test="${board.commentCount > 0}">
+                                <span class="text-muted">(${board.commentCount})</span>
+                            </c:if>
+                        </td>
+                        <td>${board.writer}</td>
+                        <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td class="text-center">${board.views}</td>
+                    </tr>
+                </c:if>
+            </c:forEach>
 
-        <c:forEach var="board" items="${boards}">
-            <c:if test="${!board.pinned}">
-                <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'">
-                    <td class="text-center"></td> <!-- 번호 비워두기 -->
-                    <td>${board.categoryName}</td>
-                    <td class="text-primary">
-                            ${board.title}
-                        <c:if test="${board.commentCount > 0}">
-                            <span class="text-muted">(${board.commentCount})</span>
-                        </c:if>
-                    </td>
-                    <td>${board.writer}</td>
-                    <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
-                    <td class="text-center">${board.views}</td>
-                </tr>
-            </c:if>
-        </c:forEach>
+            <c:forEach var="board" items="${boards}">
+                <c:if test="${!board.pinned}">
+                    <tr onclick="location.href='${pageContext.request.contextPath}/board/view/${board.id}'">
+                        <td class="text-center"></td> <!-- 번호 비워두기 -->
+                        <td>${board.categoryName}</td>
+                        <td class="text-primary">
+                                ${board.title}
+                            <c:if test="${board.commentCount > 0}">
+                                <span class="text-muted">(${board.commentCount})</span>
+                            </c:if>
+                        </td>
+                        <td>${board.writer}</td>
+                        <td><fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td class="text-center">${board.views}</td>
+                    </tr>
+                </c:if>
+            </c:forEach>
 
-        </tbody>
+            </tbody>
 
-    </table>
+        </table>
+    </div>
 
     <nav>
         <ul class="pagination justify-content-center mt-4">
