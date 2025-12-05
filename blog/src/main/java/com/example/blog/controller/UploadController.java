@@ -3,6 +3,7 @@ package com.example.blog.controller;
 import com.example.blog.dto.ImageDTO;
 import com.example.blog.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,12 +11,15 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Controller
+@RestController
 public class UploadController {
 
-    private static final String UPLOAD_PATH = "C:/upload/";
+    @Value("${file.upload.dir}")
+    private String uploadDir;
 
     @Autowired
     private ImageService imageService;
@@ -23,17 +27,21 @@ public class UploadController {
     @PostMapping("/upload/image")
     @ResponseBody
     public String uploadImage(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws IOException {
-        File dir = new File(UPLOAD_PATH);
-        if (!dir.exists()) dir.mkdirs();
+
+        File dir = new File(uploadDir);
+
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
 
         String originalFilename = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
         String savedName = uuid + "_" + originalFilename;
 
-        File dest = new File(dir, savedName);
+        File dest = Paths.get(uploadDir, savedName).toFile();
+
         file.transferTo(dest);
 
-        // 클라이언트에게 반환할 경로 (URL)
         String imageUrl = request.getContextPath() + "/upload/" + savedName;
 
         // DB 저장

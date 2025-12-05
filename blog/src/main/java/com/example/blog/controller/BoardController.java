@@ -83,8 +83,6 @@ public class BoardController {
 
         BoardDTO board = boardService.getBoardById(id);
         if (board == null) {
-            // I will leave this as is, but it was pointing to a 404 page that will be gone.
-            // The user wants the code reverted, so I will revert to a simple redirect.
             return "redirect:/board/list";
         }
 

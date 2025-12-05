@@ -174,4 +174,7 @@ buildNumber.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
+# 데이터베이스 비밀 정보 파일 제외
+database.properties
+
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,maven,git
