@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko" data-bs-theme="light">
 <head>
@@ -60,7 +61,11 @@
                                 </div>
                                 <div>
                                     <p class="text-muted mb-2">
-                                        <small>작성일: <span class="created-at" data-time="${board.createdAt}"></span></small>
+                                        <small>작성일:
+                                            <span class="created-at" data-time="${board.createdAt}">
+                                                <fmt:formatDate value="${board.createdAt}" pattern="yyyy-MM-dd HH:mm"/>
+                                            </span>
+                                        </small>
                                     </p>
                                     <a href="${pageContext.request.contextPath}/board/view/${board.id}"
                                        class="btn btn-sm btn-primary">읽기</a>
