@@ -134,6 +134,18 @@ INSERT INTO `todo` (`id`, `member_no`, `parent_id`, `content`, `completed`, `cre
 	(2, 25, NULL, '블로그 디자인 개편', 1, '2025-12-25 14:00:00', '2025-12-30'),
 	(3, 24, 1, '1. Spring Security 설정', 0, '2025-12-26 11:00:00', '2025-12-27');
 
+-- 테이블 blog_db.diary 구조 내보내기
+CREATE TABLE IF NOT EXISTS `diary` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `member_no` INT(11) NOT NULL,
+  `diary_date` DATE NOT NULL,
+  `content` TEXT NOT NULL,
+  `image_path` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_diary_member_date` (`member_no`, `diary_date`),
+  CONSTRAINT `FK_diary_member` FOREIGN KEY (`member_no`) REFERENCES `member` (`member_no`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
