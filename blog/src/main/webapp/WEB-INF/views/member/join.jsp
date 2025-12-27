@@ -53,6 +53,18 @@
             </div>
         </div>
 
+        <!-- 이용약관 -->
+        <div class="mb-3">
+            <label class="form-label">이용약관</label>
+            <%@ include file="/WEB-INF/views/member/terms.jsp" %>
+            <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" id="agreeTerms">
+                <label class="form-check-label" for="agreeTerms">
+                    이용약관에 동의합니다.
+                </label>
+            </div>
+        </div>
+
         <button type="submit" id="submitBtn" class="btn btn-primary w-100" disabled>회원가입</button>
     </form>
 
